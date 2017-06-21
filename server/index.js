@@ -1,16 +1,20 @@
-import express from 'express';
-import logger from 'morgan';
-import config from './config/main';
+const express = require('express'),  
+      app = express(),
+      bodyParser = require('body-parser'),
+      logger = require('morgan'),
+      mongoose = require('mongoose'),
+      config = require('./config/main')
+      router = require('./router');
 
-// initialize express
-const app = express();
+// Database connection
+mongoose.connect(config.database);
 
 // Start the server
 const server = app.listen(config.port);
 console.log(`Your server is running on port ${config.port}.`);
 
 // Setting up basic middleware for all Express requests
-app.use(logger('dev')); // Log requeststo API using morgan
+app.use(logger('dev')); // Log requests to console using morgan
 
 // Enable CORS from client-side
 app.use((req, res, next) => {
@@ -21,3 +25,8 @@ app.use((req, res, next) => {
   next();
 });
 
+// Add body-parser to parse urlencoded bodies to JSON
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+router(app);
