@@ -1,8 +1,35 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-import './index.css';
+// import { Provider } from 'react-redux'; 
+// import { createStore, applyMiddleware } from 'redux';
+// import reduxThunk from 'redux-thunk'; 
+// import rootReducer from './reducers/index';
+import { BrowserRouter as Router } from 'react-router-dom';
+import App from './components/App';
+// import { AUTH_USER } from './actions/types';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+// import './index.css';
+
+// const store = createStore(
+//   rootReducer,
+//   applyMiddleware(reduxThunk)
+// );
+
+ReactDOM.render(
+    <Router>
+      <App />
+    </Router>,
+  document.getElementById('root')
+);
 registerServiceWorker();
+
+// ReactDOM.render(
+//   <Provider store={store}>
+//     <Router>
+//       <App />
+//     </Router>
+//   </Provider>,
+//   document.getElementById('root')
+// );
+// registerServiceWorker();
