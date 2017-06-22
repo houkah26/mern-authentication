@@ -7,6 +7,7 @@ const express = require('express'),
       router = require('./router');
 
 // Database connection
+mongoose.Promise = global.Promise;
 mongoose.connect(config.database);
 
 // Start the server
