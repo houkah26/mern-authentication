@@ -11,7 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/houkah26/mern-authentication.git"
   },
-  "author": "houkah26",
+  "author": "Austin Houk",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/houkah26/mern-authentication/issues"
