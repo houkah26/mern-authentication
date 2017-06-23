@@ -11,6 +11,7 @@ import rootReducer from './reducers/index';
 import App from './components/App';
 import { AUTH_USER } from './actions/types';
 
+import 'semantic-ui-css/semantic.min.css';
 // import './index.css';
 
 const store = createStore(
