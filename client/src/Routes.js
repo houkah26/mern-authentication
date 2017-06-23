@@ -1,12 +1,12 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import HomePage from './pages/HomePage';
-import Register from './pages/Register';
-import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
-import NotFoundPage from './pages/NotFoundPage';
-import RequireAuth from './auth/RequireAuth';
+import HomePage from './components/pages/HomePage';
+import Register from './components/pages/Register';
+import Login from './components/pages/Login';
+import Dashboard from './components/pages/Dashboard';
+import NotFoundPage from './components/pages/NotFoundPage';
+import RequireAuth from './components/auth/RequireAuth';
 
 const Routes = () => (
   <Switch>
