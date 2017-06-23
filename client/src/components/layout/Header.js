@@ -27,7 +27,7 @@ class Header extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return { content: state.auth.content }
+  return { authenticated: state.auth.authenticated }
 }
 
 export default connect(mapStateToProps, { logoutUser })(Header);

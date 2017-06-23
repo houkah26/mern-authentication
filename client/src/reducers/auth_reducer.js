@@ -10,7 +10,7 @@ export default function (state = INITIAL_STATE, action) {
     case AUTH_USER:
       return { ...state, error: '', message: '', authenticated: true };
     case UNAUTH_USER:
-      return { ...state, authenticated: false };
+      return { ...INITIAL_STATE };
     case AUTH_ERROR:
       return { ...state, error: action.payload };
     case PROTECTED_TEST:

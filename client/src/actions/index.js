@@ -1,10 +1,12 @@
 import cookie from 'react-cookie';
 import axios from 'axios';
+import { push } from 'react-router-redux'
+
 import {  AUTH_USER,  
           AUTH_ERROR,
           UNAUTH_USER,
           PROTECTED_TEST } from './types';
-import { API_URL, CLIENT_ROOT_URL } from '../constants';
+import { API_URL } from '../constants';
 
 export function errorHandler(dispatch, error, type) {  
   let errorMessage = '';
@@ -37,7 +39,7 @@ export function loginUser({ email, password }) {
     .then(response => {
       cookie.save('token', response.data.token, { path: '/' });
       dispatch({ type: AUTH_USER });
-      window.location.href = CLIENT_ROOT_URL + '/dashboard';
+      dispatch(push('/dashboard'));
     })
     .catch((error) => {
       errorHandler(dispatch, error.response, AUTH_ERROR)
@@ -51,7 +53,7 @@ export function registerUser({ email, firstName, lastName, password }) {
     .then(response => {
       cookie.save('token', response.data.token, { path: '/' });
       dispatch({ type: AUTH_USER });
-      window.location.href = CLIENT_ROOT_URL + '/dashboard';
+      dispatch(push('/dashboard'));
     })
     .catch((error) => {
       errorHandler(dispatch, error.response, AUTH_ERROR)
@@ -64,7 +66,7 @@ export function logoutUser() {
     dispatch({ type: UNAUTH_USER });
     cookie.remove('token', { path: '/' });
 
-    window.location.href = CLIENT_ROOT_URL + '/login';
+    dispatch(push('/login'));
   }
 }
 
