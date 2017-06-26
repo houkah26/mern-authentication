@@ -4,7 +4,7 @@ import Routes from '../Routes'
 import Header from './layout/Header'
 import Footer from './layout/Footer'
 
-// import './App.css';
+import './App.css';
 
 const App = () => (
   <div>

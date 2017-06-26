@@ -10,7 +10,7 @@ import App from './components/App';
 import { AUTH_USER } from './actions/types';
 
 import 'semantic-ui-css/semantic.min.css';
-// import './index.css';
+import './index.css';
 
 // Check for existing token and auth user if exists
 const token = cookie.load('token');
