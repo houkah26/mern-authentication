@@ -86,3 +86,9 @@ export function protectedTest() {
     });
   }
 }
+
+export function changeRoute(route) {
+  return function(dispatch) {
+    dispatch(push(route));
+  }
+};

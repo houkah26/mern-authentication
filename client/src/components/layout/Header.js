@@ -1,33 +1,37 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Menu } from 'semantic-ui-react';
-import { logoutUser } from '../../actions';
+import { logoutUser, changeRoute } from '../../actions';
+
 
 class Header extends Component {
-  state = { activeItem: 'home' }
-
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+  handleItemClick = (e, { name }) => {
+    const route = name === 'homepage' ? '/' : '/' + name;
+    this.props.changeRoute(route);
+  }
 
   render() {
-    const { activeItem } = this.state
+    const activeItem = this.props.currentPath.slice(1);
 
     return (
-      <div>
-        <Menu pointing secondary>
-          <Menu.Item name='home' active={activeItem === 'home'} onClick={this.handleItemClick} />
-          <Menu.Item name='messages' active={activeItem === 'messages'} onClick={this.handleItemClick} />
-          <Menu.Item name='friends' active={activeItem === 'friends'} onClick={this.handleItemClick} />
-          <Menu.Menu position='right'>
-            <Menu.Item name='logout' active={activeItem === 'logout'} onClick={this.props.logoutUser} />
-          </Menu.Menu>
-        </Menu>
-      </div>
+      <Menu className='header' inverted size='huge'>
+        <Menu.Item name='homepage' active={activeItem === ''} onClick={this.handleItemClick} />
+        <Menu.Item name='dashboard' active={activeItem === 'dashboard'} onClick={this.handleItemClick} />
+        <Menu.Menu position='right'>
+          <Menu.Item name='login' active={activeItem === 'login'} onClick={this.handleItemClick} />
+          <Menu.Item name='register' active={activeItem === 'register'} onClick={this.handleItemClick} />
+          <Menu.Item name='logout' onClick={this.props.logoutUser} />
+        </Menu.Menu>
+      </Menu>
     )
   }
 }
 
 const mapStateToProps = (state) => {
-  return { authenticated: state.auth.authenticated }
+  return {
+    authenticated: state.auth.authenticated,
+    currentPath: state.router.location.pathname
+  }
 }
 
-export default connect(mapStateToProps, { logoutUser })(Header);
+export default connect(mapStateToProps, { logoutUser, changeRoute })(Header);
