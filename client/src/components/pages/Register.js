@@ -1,22 +1,34 @@
 import React, { Component } from 'react';  
 import { connect } from 'react-redux';  
 import { Field, reduxForm } from 'redux-form';  
+import { Form, Message } from 'semantic-ui-react';
+import { startCase } from 'lodash';
 import { registerUser } from '../../actions';
+import Checkbox from '../form/Checkbox';
 
-const form = reduxForm({  
-  form: 'register',
-  validate
-});
+const inputFields = ["firstName", "lastName", "email", "password"];
 
-const renderField = field => (  
-    <div>
-      <input className="form-control" {...field.input}/>
-      {field.touched && field.error && <div className="error">{field.error}</div>}
-    </div>
-);
+const renderField = field => {
+  const { touched, error } = field.meta;
+  const input = field.input;
+  const name = input.name;
+  const type = name === "password" ? "password" : "text";
+  let displayError = touched && error && true;
 
-function validate(formProps) {  
+  return (
+    <Form.Field error={displayError}>
+      <label>{startCase(name)}</label>
+      <input type={type} {...input}/>
+      {displayError && 
+      <span style={{ "color": "#9F3A38" }} className="error">{error}</span>}
+    </Form.Field>  
+  );
+}
+
+function validate(formProps) {
   const errors = {};
+  
+  console.log(formProps);
 
   if (!formProps.firstName) {
     errors.firstName = 'Please enter a first name';
@@ -34,6 +46,10 @@ function validate(formProps) {
     errors.password = 'Please enter a password';
   }
 
+  if (!formProps.checkbox) {
+    errors.checkbox = 'You must accept the Terms and Conditions';
+  }
+
   return errors;
 }
 
@@ -42,46 +58,17 @@ class Register extends Component {
     this.props.registerUser(formProps);
   }
 
-  renderAlert() {
-    if(this.props.errorMessage) {
-      return (
-        <div>
-          <span><strong>Error!</strong> {this.props.errorMessage}</span>
-        </div>
-      );
-    }
-  }
-
   render() {
     const { handleSubmit } = this.props;
+    const registerError = this.props.errorMessage.length > 0;
 
     return (
-      <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
-      {this.renderAlert()}
-      <div className="row">
-        <div className="col-md-6">
-          <label>First Name</label>
-          <Field name="firstName" className="form-control" component={renderField} type="text" />
-        </div>
-        <div className="col-md-6">
-          <label>Last Name</label>
-          <Field name="lastName" className="form-control" component={renderField} type="text" />
-        </div>
-      </div>
-        <div className="row">
-          <div className="col-md-12">
-            <label>Email</label>
-            <Field name="email" className="form-control" component={renderField} type="text" />
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-md-12">
-            <label>Password</label>
-            <Field name="password" className="form-control" component={renderField} type="password" />
-          </div>
-        </div>
-        <button type="submit" className="btn btn-primary">Register</button>
-      </form>
+      <Form error={registerError} onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
+        <Message error header='Error:' content={this.props.errorMessage}/>
+        {inputFields.map(name => <Field name={name} component={renderField} key={name}/>)}
+        <Field name="checkbox" component={Checkbox} label="I agree to the Terms and Conditions" />
+        <Form.Button>Register</Form.Button>
+      </Form>
     );
   }
 }
@@ -93,4 +80,9 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { registerUser })(form(Register));
+const createForm = reduxForm({  
+  form: 'register',
+  validate
+});
+
+export default connect(mapStateToProps, { registerUser })(createForm(Register));
