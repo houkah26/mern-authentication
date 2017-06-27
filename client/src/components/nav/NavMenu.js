@@ -20,9 +20,9 @@ class NavMenu extends Component {
       <Menu className='nav-menu' stackable inverted size='huge'>
         <Menu.Item name='homepage' active={activeItem === ''} onClick={this.navToRoute} />
         <Menu.Item name='dashboard' active={activeItem === 'dashboard'} onClick={this.navToRoute} />
-        {authenticated && <Menu.Item position='right' name='logout' onClick={this.props.logoutUser} />}
-        {!authenticated && <Menu.Item position='right' name='login' active={activeItem === 'login'} onClick={this.navToRoute} />}
-        {!authenticated && <Menu.Item name='register' active={activeItem === 'register'} onClick={this.navToRoute} />}
+        {authenticated && <Menu.Item  name='logout' position='right' onClick={this.props.logoutUser} />}
+        {!authenticated && <Menu.Item name='register' position='right' active={activeItem === 'register'} onClick={this.navToRoute} />}
+        {!authenticated && <Menu.Item name='login' active={activeItem === 'login'} onClick={this.navToRoute} />}
       </Menu>
     )
   }
