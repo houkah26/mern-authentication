@@ -1,6 +1,10 @@
 .layout {
   min-height: 100%;
 
+  .header {
+    padding-bottom: 1em;
+  }
+
   .footer {
     position: fixed;
     bottom: 0;
