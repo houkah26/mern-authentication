@@ -1,45 +1,45 @@
 import React, { Component } from 'react';  
 import { connect } from 'react-redux';  
-import { Field, reduxForm } from 'redux-form';   
+import { Field, reduxForm } from 'redux-form';
+import { Form, Message } from 'semantic-ui-react'; 
+
 import { loginUser } from '../../actions';
 
-const form = reduxForm({  
-  form: 'login'
-});
+import RenderField from '../form/RenderField';
+
+// Input fields to render
+const inputFields = ["email", "password"];
+
+// Form validationg for redux-form
+const validate = formProps => {
+  const errors = {};
+
+  if (!formProps.email) {
+    errors.email = 'Please enter an email';
+  }
+
+  if (!formProps.password) {
+    errors.password = 'Please enter a password';
+  }
+
+  return errors;
+}
 
 class Login extends Component {  
-  handleFormSubmit(formProps) {
+  handleFormSubmit = (formProps) => {
     this.props.loginUser(formProps);
   }
 
-  renderAlert() {
-    if(this.props.errorMessage) {
-      return (
-        <div>
-          <span><strong>Error!</strong> {this.props.errorMessage}</span>
-        </div>
-      );
-    }
-  }
-
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, errorMessage } = this.props;
+    const containsError = errorMessage.length > 0;
 
     return (
-      <div>
-        <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
-        {this.renderAlert()}
-          <div>
-            <label>Email</label>
-            <Field name="email" className="form-control" component="input" type="text" />
-          </div>
-          <div>
-            <label>Password</label>
-            <Field name="password" className="form-control" component="input" type="password" />
-          </div>
-          <button type="submit" className="btn btn-primary">Login</button>
-        </form>
-      </div>
+      <Form error={containsError} onSubmit={handleSubmit(this.handleFormSubmit)}>
+        <Message error header='Error:' content={errorMessage}/>
+        {inputFields.map(name => <Field name={name} component={RenderField} key={name}/>)}
+        <Form.Button>Login</Form.Button>
+      </Form>
     );
   }
 }
@@ -47,8 +47,12 @@ class Login extends Component {
 function mapStateToProps(state) {  
   return {
     errorMessage: state.auth.error,
-    message: state.auth.message
   };
 }
 
-export default connect(mapStateToProps, { loginUser })(form(Login));  
+const createForm = reduxForm({  
+  form: 'login',
+  validate
+});
+
+export default connect(mapStateToProps, { loginUser })(createForm(Login));  
