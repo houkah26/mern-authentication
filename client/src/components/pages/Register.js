@@ -13,7 +13,7 @@ const renderField = field => {
   const input = field.input;
   const name = input.name;
   const type = name === "password" ? "password" : "text";
-  let displayError = touched && error && true;
+  const displayError = touched && error && true;
 
   return (
     <Form.Field error={displayError}>
@@ -25,10 +25,8 @@ const renderField = field => {
   );
 }
 
-function validate(formProps) {
+const validate = formProps => {
   const errors = {};
-  
-  console.log(formProps);
 
   if (!formProps.firstName) {
     errors.firstName = 'Please enter a first name';
@@ -54,17 +52,17 @@ function validate(formProps) {
 }
 
 class Register extends Component {  
-  handleFormSubmit(formProps) {
+  handleFormSubmit = (formProps) => {
     this.props.registerUser(formProps);
   }
 
   render() {
-    const { handleSubmit } = this.props;
-    const registerError = this.props.errorMessage.length > 0;
+    const { handleSubmit, errorMessage } = this.props;
+    const registerError = errorMessage.length > 0;
 
     return (
-      <Form error={registerError} onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
-        <Message error header='Error:' content={this.props.errorMessage}/>
+      <Form error={registerError} onSubmit={handleSubmit(this.handleFormSubmit)}>
+        <Message error header='Error:' content={errorMessage}/>
         {inputFields.map(name => <Field name={name} component={renderField} key={name}/>)}
         <Field name="checkbox" component={Checkbox} label="I agree to the Terms and Conditions" />
         <Form.Button>Register</Form.Button>
@@ -76,7 +74,6 @@ class Register extends Component {
 function mapStateToProps(state) {  
   return {
     errorMessage: state.auth.error,
-    message: state.auth.message
   };
 }
 
