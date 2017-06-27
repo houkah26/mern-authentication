@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.16.2",
     "history": "^4.6.3",
+    "lodash": "^4.17.4",
     "react": "^15.6.1",
     "react-cookie": "^0.4.7",
     "react-dom": "^15.6.1",
