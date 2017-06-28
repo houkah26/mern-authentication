@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { Form, Message, Icon } from 'semantic-ui-react'; 
 
-import { loginUser } from '../../actions';
+import { loginUser, clearAuthErrors } from '../../actions';
 
 import RenderField from './RenderField';
 
@@ -25,7 +25,11 @@ const validate = formProps => {
   return errors;
 }
 
-class Login extends Component {  
+class Login extends Component {
+  componentDidMount() {
+    this.props.clearAuthErrors();
+  }
+
   handleFormSubmit = (formProps) => {
     this.props.loginUser(formProps);
   }
@@ -57,4 +61,4 @@ const createForm = reduxForm({
   validate
 });
 
-export default connect(mapStateToProps, { loginUser })(createForm(Login));  
+export default connect(mapStateToProps, { loginUser, clearAuthErrors })(createForm(Login));  
