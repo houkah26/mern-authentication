@@ -1,11 +1,11 @@
 import React, { Component } from 'react';  
 import { connect } from 'react-redux';  
 import { Field, reduxForm } from 'redux-form';
-import { Form, Message } from 'semantic-ui-react'; 
+import { Form, Message, Icon } from 'semantic-ui-react'; 
 
 import { loginUser } from '../../actions';
 
-import RenderField from '../form/RenderField';
+import RenderField from './RenderField';
 
 // Input fields to render
 const inputFields = ["email", "password"];
@@ -38,7 +38,9 @@ class Login extends Component {
       <Form error={containsError} onSubmit={handleSubmit(this.handleFormSubmit)}>
         <Message error header='Error:' content={errorMessage}/>
         {inputFields.map(name => <Field name={name} component={RenderField} key={name}/>)}
-        <Form.Button>Login</Form.Button>
+        <Form.Button>
+          <Icon name='sign in' />Login
+        </Form.Button>
       </Form>
     );
   }

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';  
 import { connect } from 'react-redux';  
 import { Field, reduxForm } from 'redux-form';  
-import { Form, Message } from 'semantic-ui-react';
+import { Form, Message, Icon } from 'semantic-ui-react';
 
-import { registerUser } from '../../actions';
+import { registerUser, clearAuthErrors } from '../../actions';
 
-import RenderField from '../form/RenderField';
-import Checkbox from '../form/Checkbox';
+import RenderField from './RenderField';
+import Checkbox from './Checkbox';
 
 // Input fields to render
 const inputFields = ["firstName", "lastName", "email", "password"];
@@ -38,7 +38,11 @@ const validate = formProps => {
   return errors;
 }
 
-class Register extends Component {  
+class RegisterForm extends Component {
+  componentDidMount() {
+    this.props.clearAuthErrors();
+  }
+
   handleFormSubmit = (formProps) => {
     this.props.registerUser(formProps);
   }
@@ -59,7 +63,9 @@ class Register extends Component {
           <Field name={name} component={RenderField} key={name}/>
         ))}
         <Field name="checkbox" component={Checkbox} label="I agree to the Terms and Conditions" />
-        <Form.Button>Register</Form.Button>
+        <Form.Button>
+          <Icon name='signup' />Register
+        </Form.Button>
       </Form>
     );
   }
@@ -76,4 +82,4 @@ const createForm = reduxForm({
   validate
 });
 
-export default connect(mapStateToProps, { registerUser })(createForm(Register));
+export default connect(mapStateToProps, { registerUser, clearAuthErrors })(createForm(RegisterForm));
