@@ -4,6 +4,8 @@ import { Menu } from 'semantic-ui-react';
 
 import { logoutUser, changeRoute } from '../../actions';
 
+import MenuItem from './MenuItem'
+
 import './NavMenu.css';
 
 class NavMenu extends Component {
@@ -14,15 +16,23 @@ class NavMenu extends Component {
 
   render() {
     const activeItem = this.props.currentPath.slice(1);
-    const authenticated = this.props.authenticated;
+    const menuItems = [
+      {name: 'homepage', icon: {name: 'home', size: 'large'}, shouldRender: true, position: null, onClick: this.navToRoute},
+      {name: 'dashboard', icon: {name: 'browser', size: 'large'}, shouldRender: this.props.authenticated, position: null, onClick: this.navToRoute},
+      {name: 'logout', icon: {name: 'sign out', size: 'large'}, shouldRender: this.props.authenticated, position: 'right', onClick: this.props.logoutUser},
+      {name: 'register', icon: {name: 'signup', size: 'large'}, shouldRender: !this.props.authenticated, position: 'right', onClick: this.navToRoute},
+      {name: 'login', icon: {name: 'sign in', size: 'large'}, shouldRender: !this.props.authenticated, position: null, onClick: this.navToRoute}
+    ];
 
     return (
       <Menu className='nav-menu' stackable inverted size='huge'>
-        <Menu.Item name='homepage' active={activeItem === ''} onClick={this.navToRoute} />
-        <Menu.Item name='dashboard' active={activeItem === 'dashboard'} onClick={this.navToRoute} />
-        {authenticated && <Menu.Item  name='logout' position='right' onClick={this.props.logoutUser} />}
-        {!authenticated && <Menu.Item name='register' position='right' active={activeItem === 'register'} onClick={this.navToRoute} />}
-        {!authenticated && <Menu.Item name='login' active={activeItem === 'login'} onClick={this.navToRoute} />}
+        {menuItems.map(item => (
+          <MenuItem 
+            { ...item }
+            activeItem={activeItem}
+            key={item.name}
+          />
+        ))}
       </Menu>
     )
   }
