@@ -11,22 +11,21 @@ const generateToken = (user) => {
 }
 
 // Set user info from request
-function setUserInfo(request) {  
+function setUserInfo(user) {  
   return {
-    _id: request._id,
-    firstName: request.profile.firstName,
-    lastName: request.profile.lastName,
-    email: request.email,
-    role: request.role,
+    _id: user._id,
+    firstName: user.profile.firstName,
+    lastName: user.profile.lastName,
+    email: user.email,
+    role: user.role,
   }
 }
 
 //========================================
 // Login Route
 //========================================
-exports.login = (req, res, next) => {
-
-  let userInfo = setUserInfo(req.user);
+exports.login = (res, user) => {
+  let userInfo = setUserInfo(user);
 
   res.status(200).json({
     token: 'JWT ' + generateToken(userInfo),
@@ -46,17 +45,17 @@ exports.register = (req, res, next) => {
 
   // Return error if no email provided
   if (!email) {
-    return res.status(422).send({ error: 'You must enter an email address.'});
+    return res.status(422).send({ message: 'You must enter an email address.'});
   }
 
   // Return error if full name not provided
   if (!firstName || !lastName) {
-    return res.status(422).send({ error: 'You must enter your full name.'});
+    return res.status(422).send({ message: 'You must enter your full name.'});
   }
 
   // Return error if no password provided
   if (!password) {
-    return res.status(422).send({ error: 'You must enter a password.' });
+    return res.status(422).send({ message: 'You must enter a password.' });
   }
 
   User.findOne({ email: email }, (err, existingUser) => {
@@ -64,7 +63,7 @@ exports.register = (req, res, next) => {
 
       // If user is not unique, return error
       if (existingUser) {
-        return res.status(422).send({ error: 'That email address is already in use.' });
+        return res.status(422).send({ message: 'That email address is already in use.' });
       }
 
       // If email is unique and password was provided, create account
@@ -77,11 +76,7 @@ exports.register = (req, res, next) => {
       user.save((err, user) => {
         if (err) { return next(err); }
 
-        // Subscribe member to Mailchimp list
-        // mailchimp.subscribeToNewsletter(user.email);
-
         // Respond with JWT if user was created
-
         let userInfo = setUserInfo(user);
 
         res.status(201).json({
@@ -92,28 +87,28 @@ exports.register = (req, res, next) => {
   });
 }
 
-//========================================
-// Authorization Middleware
-//========================================
+// //========================================
+// // Authorization Middleware
+// //========================================
 
-// Role authorization check
-exports.roleAuthorization = (role) => {  
-  return (req, res, next) => {
-    const user = req.user;
+// // Role authorization check
+// exports.roleAuthorization = (role) => {  
+//   return (req, res, next) => {
+//     const user = req.user;
 
-    User.findById(user._id, (err, foundUser) => {
-      if (err) {
-        res.status(422).json({ error: 'No user was found.' });
-        return next(err);
-      }
+//     User.findById(user._id, (err, foundUser) => {
+//       if (err) {
+//         res.status(422).json({ error: 'No user was found.' });
+//         return next(err);
+//       }
 
-      // If user is found, check role.
-      if (foundUser.role == role) {
-        return next();
-      }
+//       // If user is found, check role.
+//       if (foundUser.role == role) {
+//         return next();
+//       }
 
-      res.status(401).json({ error: 'You are not authorized to view this content.' });
-      return next('Unauthorized');
-    })
-  }
-}
+//       res.status(401).json({ error: 'You are not authorized to view this content.' });
+//       return next('Unauthorized');
+//     })
+//   }
+// }
