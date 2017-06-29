@@ -21,7 +21,7 @@ const requireLogin = function (req, res, next) {
 module.exports = (app) => {
   // Initializing route groups
   const apiRoutes = express.Router(),
-    authRoutes = express.Router();
+        authRoutes = express.Router();
 
   //=========================
   // Auth Routes
@@ -32,10 +32,8 @@ module.exports = (app) => {
 
   // Test protected route
   apiRoutes.get('/protected', requireAuth, (req, res) => {
-    console.log(req)
     res.send({
       content: 'The protected test route is functional!',
-      user: req.user
     });
   });
 
@@ -47,4 +45,11 @@ module.exports = (app) => {
 
   // Login route
   authRoutes.post('/login', requireLogin);
+
+  // User info route given valid JWT
+  authRoutes.get('/user', requireAuth, (req, res) => {
+    res.send({
+      user: req.user
+    });
+  });
 }

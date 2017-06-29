@@ -3,40 +3,42 @@ import axios from 'axios';
 import { push } from 'react-router-redux';
 import { has as _has } from 'lodash';
 
-import {  AUTH_USER,  
-          AUTH_ERROR,
-          UNAUTH_USER,
-          PROTECTED_TEST } from './types';
+import {
+  AUTH_USER,
+  AUTH_ERROR,
+  UNAUTH_USER,
+  PROTECTED_TEST
+} from './types';
 import { API_URL } from '../constants';
 
 //= =====================
-// Auth Actions
+// Auth Action Creators
 //= =====================
-export function loginUser({ email, password }) {  
-  return function(dispatch) {
+export function loginUser({ email, password }) {
+  return function (dispatch) {
     axios.post(`${API_URL}/auth/login`, { email, password })
-    .then(response => {
-      loginHandler(dispatch, response.data.token, response.data.user);
-    })
-    .catch((error) => {
-      errorHandler(dispatch, error.response, AUTH_ERROR)
-    });
-    }
-  }
-
-export function registerUser({ email, firstName, lastName, password }) {  
-  return function(dispatch) {
-    axios.post(`${API_URL}/auth/register`, { email, firstName, lastName, password })
-    .then(response => {
-      loginHandler(dispatch, response.data.token, response.data.user);
-    })
-    .catch((error) => {
-      errorHandler(dispatch, error.response, AUTH_ERROR)
-    });
+      .then(response => {
+        loginHandler(dispatch, response.data.token, response.data.user);
+      })
+      .catch((error) => {
+        errorHandler(dispatch, error.response, AUTH_ERROR)
+      });
   }
 }
 
-export function logoutUser() {  
+export function registerUser({ email, firstName, lastName, password }) {
+  return function (dispatch) {
+    axios.post(`${API_URL}/auth/register`, { email, firstName, lastName, password })
+      .then(response => {
+        loginHandler(dispatch, response.data.token, response.data.user);
+      })
+      .catch((error) => {
+        errorHandler(dispatch, error.response, AUTH_ERROR)
+      });
+  }
+}
+
+export function logoutUser() {
   return function (dispatch) {
     dispatch({ type: UNAUTH_USER });
     cookie.remove('token', { path: '/' });
@@ -45,25 +47,45 @@ export function logoutUser() {
   }
 }
 
-export function protectedTest() {  
-  return function(dispatch) {
+export function protectedTest() {
+  return function (dispatch) {
     axios.get(`${API_URL}/protected`, {
       headers: { 'Authorization': cookie.load('token') }
     })
-    .then(response => {
-      dispatch({
-        type: PROTECTED_TEST,
-        payload: response.data.content
+      .then(response => {
+        // console.log(response);
+        dispatch({
+          type: PROTECTED_TEST,
+          payload: response.data.content
+        });
+      })
+      .catch((error) => {
+        errorHandler(dispatch, error.response, AUTH_ERROR)
       });
+  }
+}
+
+export function fetchUser(token) {
+  return function (dispatch) {
+    axios.get(`${API_URL}/auth/user`, {
+      headers: { 'Authorization': token }
     })
-    .catch((error) => {
-      errorHandler(dispatch, error.response, AUTH_ERROR)
-    });
+      .then(response => {
+        console.log(response);
+        // set auth status to true and set user info
+        dispatch({
+          type: AUTH_USER,
+          user: response.data.user
+        });
+      })
+      .catch((error) => {
+        logoutUser();
+      });
   }
 }
 
 export function clearAuthErrors() {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch({
       type: AUTH_ERROR,
       payload: ''
@@ -94,7 +116,7 @@ const loginHandler = (dispatch, token, user) => {
 // Error handler for authentication errors
 function errorHandler(dispatch, error, type) {
   console.log(error);
-   
+
   // check for error message otherwise set as network error
   let errorMessage;
   const containsMessage = _has(error, 'data.message');
@@ -105,7 +127,7 @@ function errorHandler(dispatch, error, type) {
   }
 
   // if there is no message and status code is 401, send unauthorized error message
-  if(_has(error, 'status') && error.status === 401 && !containsMessage) {
+  if (_has(error, 'status') && error.status === 401 && !containsMessage) {
     dispatch({
       type: type,
       payload: 'You are not authorized to do this. Please login and try again.'
