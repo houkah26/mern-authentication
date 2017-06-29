@@ -12,15 +12,17 @@ import { API_URL } from '../constants';
 function errorHandler(dispatch, error, type) {
   console.log(error);
    
-  let errorMessage; 
   // check for error message otherwise set as network error
-  if (_has(error, 'response.data.message')) {
-    errorMessage = error.response.data.message;
+  let errorMessage;
+  const containsMessage = _has(error, 'data.message');
+  if (containsMessage) {
+    errorMessage = error.data.message;
   } else {
     errorMessage = 'Network Error: Please wait and try again.';
   }
 
-  if(error.status === 401) {
+  // if there is no message and status code is 401, send unauthorized error message
+  if(_has(error, 'status') && error.status === 401 && !containsMessage) {
     dispatch({
       type: type,
       payload: 'You are not authorized to do this. Please login and try again.'
@@ -57,7 +59,7 @@ export function loginUser({ email, password }) {
       loginHandler(dispatch, response.data.token, response.data.user);
     })
     .catch((error) => {
-      errorHandler(dispatch, error, AUTH_ERROR)
+      errorHandler(dispatch, error.response, AUTH_ERROR)
     });
     }
   }
@@ -69,7 +71,7 @@ export function registerUser({ email, firstName, lastName, password }) {
       loginHandler(dispatch, response.data.token, response.data.user);
     })
     .catch((error) => {
-      errorHandler(dispatch, error, AUTH_ERROR)
+      errorHandler(dispatch, error.response, AUTH_ERROR)
     });
   }
 }
