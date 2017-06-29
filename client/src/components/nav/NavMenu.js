@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Menu } from 'semantic-ui-react';
 
-import { logoutUser, changeRoute } from '../../actions';
+import { logoutUser } from '../../actions/auth';
+import { changeRoute } from '../../actions/utility';
 
 import MenuItem from './MenuItem'
 

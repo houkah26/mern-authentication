@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { Form, Message, Icon } from 'semantic-ui-react'; 
 
-import { loginUser, clearAuthErrors } from '../../actions';
+import { loginUser, clearAuthErrors } from '../../actions/auth';
 
 import RenderField from './RenderField';
 

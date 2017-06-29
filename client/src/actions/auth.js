@@ -9,49 +9,9 @@ import {  AUTH_USER,
           PROTECTED_TEST } from './types';
 import { API_URL } from '../constants';
 
-function errorHandler(dispatch, error, type) {
-  console.log(error);
-   
-  // check for error message otherwise set as network error
-  let errorMessage;
-  const containsMessage = _has(error, 'data.message');
-  if (containsMessage) {
-    errorMessage = error.data.message;
-  } else {
-    errorMessage = 'Network Error: Please wait and try again.';
-  }
-
-  // if there is no message and status code is 401, send unauthorized error message
-  if(_has(error, 'status') && error.status === 401 && !containsMessage) {
-    dispatch({
-      type: type,
-      payload: 'You are not authorized to do this. Please login and try again.'
-    });
-    logoutUser();
-  } else {
-    dispatch({
-      type: type,
-      payload: errorMessage
-    });
-  }
-}
-
-// Login handler for setting token, user info, and auth status on 
-// succesfull authentication
-const loginHandler = (dispatch, token, user) => {
-  // set web token
-  cookie.save('token', token, { path: '/' });
-
-  // set auth status to true and set user info
-  dispatch({
-    type: AUTH_USER,
-    user: user
-  });
-
-  // reroute to dashboard
-  dispatch(push('/dashboard'));
-}
-
+//= =====================
+// Auth Actions
+//= =====================
 export function loginUser({ email, password }) {  
   return function(dispatch) {
     axios.post(`${API_URL}/auth/login`, { email, password })
@@ -102,17 +62,59 @@ export function protectedTest() {
   }
 }
 
-export function changeRoute(route) {
-  return function(dispatch) {
-    dispatch(push(route));
-  }
-};
-
 export function clearAuthErrors() {
   return function(dispatch) {
     dispatch({
       type: AUTH_ERROR,
       payload: ''
     })
+  }
+}
+
+//= =====================
+// Handlers
+//= =====================
+
+// Login handler for setting token, user info, and auth status on 
+// succesfull authentication
+const loginHandler = (dispatch, token, user) => {
+  // set web token
+  cookie.save('token', token, { path: '/' });
+
+  // set auth status to true and set user info
+  dispatch({
+    type: AUTH_USER,
+    user: user
+  });
+
+  // reroute to dashboard
+  dispatch(push('/dashboard'));
+}
+
+// Error handler for authentication errors
+function errorHandler(dispatch, error, type) {
+  console.log(error);
+   
+  // check for error message otherwise set as network error
+  let errorMessage;
+  const containsMessage = _has(error, 'data.message');
+  if (containsMessage) {
+    errorMessage = error.data.message;
+  } else {
+    errorMessage = 'Network Error: Please wait and try again.';
+  }
+
+  // if there is no message and status code is 401, send unauthorized error message
+  if(_has(error, 'status') && error.status === 401 && !containsMessage) {
+    dispatch({
+      type: type,
+      payload: 'You are not authorized to do this. Please login and try again.'
+    });
+    logoutUser();
+  } else {
+    dispatch({
+      type: type,
+      payload: errorMessage
+    });
   }
 }

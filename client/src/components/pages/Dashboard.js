@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';  
-import { protectedTest } from '../../actions';
+import { protectedTest } from '../../actions/auth';
 
 class Dashboard extends Component {
   componentDidMount() {
