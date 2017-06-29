@@ -11,7 +11,7 @@ import { API_URL } from '../constants';
 
 function errorHandler(dispatch, error, type) {
   console.log(error);
-
+   
   let errorMessage; 
   // check for error message otherwise set as network error
   if (_has(error, 'response.data.message')) {
@@ -34,13 +34,27 @@ function errorHandler(dispatch, error, type) {
   }
 }
 
+// Login handler for setting token, user info, and auth status on 
+// succesfull authentication
+const loginHandler = (dispatch, token, user) => {
+  // set web token
+  cookie.save('token', token, { path: '/' });
+
+  // set auth status to true and set user info
+  dispatch({
+    type: AUTH_USER,
+    user: user
+  });
+
+  // reroute to dashboard
+  dispatch(push('/dashboard'));
+}
+
 export function loginUser({ email, password }) {  
   return function(dispatch) {
     axios.post(`${API_URL}/auth/login`, { email, password })
     .then(response => {
-      cookie.save('token', response.data.token, { path: '/' });
-      dispatch({ type: AUTH_USER });
-      dispatch(push('/dashboard'));
+      loginHandler(dispatch, response.data.token, response.data.user);
     })
     .catch((error) => {
       errorHandler(dispatch, error, AUTH_ERROR)
@@ -52,9 +66,7 @@ export function registerUser({ email, firstName, lastName, password }) {
   return function(dispatch) {
     axios.post(`${API_URL}/auth/register`, { email, firstName, lastName, password })
     .then(response => {
-      cookie.save('token', response.data.token, { path: '/' });
-      dispatch({ type: AUTH_USER });
-      dispatch(push('/dashboard'));
+      loginHandler(dispatch, response.data.token, response.data.user);
     })
     .catch((error) => {
       errorHandler(dispatch, error, AUTH_ERROR)
@@ -93,3 +105,12 @@ export function changeRoute(route) {
     dispatch(push(route));
   }
 };
+
+export function clearAuthErrors() {
+  return function(dispatch) {
+    dispatch({
+      type: AUTH_ERROR,
+      payload: ''
+    })
+  }
+}
