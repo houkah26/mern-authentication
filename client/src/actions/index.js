@@ -1,6 +1,7 @@
 import cookie from 'react-cookie';
 import axios from 'axios';
-import { push } from 'react-router-redux'
+import { push } from 'react-router-redux';
+import { has as _has } from 'lodash';
 
 import {  AUTH_USER,  
           AUTH_ERROR,
@@ -8,15 +9,15 @@ import {  AUTH_USER,
           PROTECTED_TEST } from './types';
 import { API_URL } from '../constants';
 
-export function errorHandler(dispatch, error, type) {  
-  let errorMessage = '';
+function errorHandler(dispatch, error, type) {
+  console.log(error);
 
-  if(error.data.error) {
-    errorMessage = error.data.error;
-  } else if(error.data) {
-    errorMessage = error.data;
+  let errorMessage; 
+  // check for error message otherwise set as network error
+  if (_has(error, 'response.data.message')) {
+    errorMessage = error.response.data.message;
   } else {
-    errorMessage = error;
+    errorMessage = 'Network Error: Please wait and try again.';
   }
 
   if(error.status === 401) {
@@ -42,7 +43,7 @@ export function loginUser({ email, password }) {
       dispatch(push('/dashboard'));
     })
     .catch((error) => {
-      errorHandler(dispatch, error.response, AUTH_ERROR)
+      errorHandler(dispatch, error, AUTH_ERROR)
     });
     }
   }
@@ -56,7 +57,7 @@ export function registerUser({ email, firstName, lastName, password }) {
       dispatch(push('/dashboard'));
     })
     .catch((error) => {
-      errorHandler(dispatch, error.response, AUTH_ERROR)
+      errorHandler(dispatch, error, AUTH_ERROR)
     });
   }
 }
