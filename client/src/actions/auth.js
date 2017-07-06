@@ -113,7 +113,7 @@ const loginHandler = (dispatch, token, user) => {
 }
 
 // Error handler for authentication errors
-function errorHandler(dispatch, error, type) {
+const errorHandler = (dispatch, error, type) => {
   console.log(error);
 
   // check for error message otherwise set as network error

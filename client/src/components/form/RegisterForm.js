@@ -71,10 +71,8 @@ class RegisterForm extends Component {
   }
 }
 
-function mapStateToProps(state) {  
-  return {
-    errorMessage: state.auth.error,
-  };
+const mapStateToProps = (state) => {
+  return {errorMessage: state.auth.error}
 }
 
 const createForm = reduxForm({  
