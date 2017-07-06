@@ -71,7 +71,6 @@ export function fetchUser(token) {
       headers: { 'Authorization': token }
     })
       .then(response => {
-        console.log(response);
         // set auth status to true and set user info
         dispatch({
           type: AUTH_USER,
