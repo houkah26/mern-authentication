@@ -67,7 +67,7 @@ export function protectedTest() {
 
 export function fetchUser(token) {
   return function (dispatch) {
-    axios.get(`${API_URL}/auth/user`, {
+    axios.get(`${API_URL}/user/info`, {
       headers: { 'Authorization': token }
     })
       .then(response => {

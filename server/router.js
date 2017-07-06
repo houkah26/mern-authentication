@@ -5,7 +5,6 @@ const AuthenticationController = require('./controllers/authentication'),
 
 // Middleware to require auth
 const requireAuth = passport.authenticate('jwt', { session: false });
-// const requireLogin = passport.authenticate('local', { session: false, failWithError: true });
 
 // Middleware to require login and handle login errors
 const requireLogin = function (req, res, next) {
@@ -21,14 +20,16 @@ const requireLogin = function (req, res, next) {
 module.exports = (app) => {
   // Initializing route groups
   const apiRoutes = express.Router(),
-        authRoutes = express.Router();
+        authRoutes = express.Router(),
+        userRoutes = express.Router();
 
   //=========================
-  // Auth Routes
+  // API Routes (/api)
   //=========================
-
+  
   // Set url for API group routes
   app.use('/api', apiRoutes);
+
 
   // Test protected route
   apiRoutes.get('/protected', requireAuth, (req, res) => {
@@ -36,6 +37,10 @@ module.exports = (app) => {
       content: 'The protected test route is functional!',
     });
   });
+
+  //=========================
+  // Auth Routes (/api/auth)
+  //=========================
 
   // Set auth routes as subgroup/middleware to apiRoutes
   apiRoutes.use('/auth', authRoutes);
@@ -46,8 +51,15 @@ module.exports = (app) => {
   // Login route
   authRoutes.post('/login', requireLogin);
 
+  //=========================
+  // User Routes (/api/user)
+  //=========================
+
+  // Set user routes as subgroup/middleware to apiRoutes
+  apiRoutes.use('user', userRoutes);
+
   // User info route given valid JWT
-  authRoutes.get('/user', requireAuth, (req, res) => {
+  userRoutes.get('/info', requireAuth, (req, res) => {
     res.send({
       user: req.user
     });
