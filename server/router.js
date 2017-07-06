@@ -1,7 +1,8 @@
 const AuthenticationController = require('./controllers/authentication'),
-  express = require('express'),
-  passportService = require('./config/passport'),
-  passport = require('passport');
+      UserController = require('./controllers/user'),
+      express = require('express'),
+      passportService = require('./config/passport'),
+      passport = require('passport');
 
 // Middleware to require auth
 const requireAuth = passport.authenticate('jwt', { session: false });
@@ -56,12 +57,9 @@ module.exports = (app) => {
   //=========================
 
   // Set user routes as subgroup/middleware to apiRoutes
-  apiRoutes.use('user', userRoutes);
+  apiRoutes.use('/user', userRoutes);
 
   // User info route given valid JWT
-  userRoutes.get('/info', requireAuth, (req, res) => {
-    res.send({
-      user: req.user
-    });
-  });
+  userRoutes.get('/info', requireAuth, UserController.getInfo);
+  
 }

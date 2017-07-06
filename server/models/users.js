@@ -25,12 +25,16 @@ const UserSchema = new Schema({
     enum: ['Member', 'Client', 'Owner', 'Admin'],
     default: 'Member'
   },
+  cash: {
+    type: Number,
+    default: 1000,
+    min: 0,
+    required: true,
+  },
   resetPasswordToken: { type: String },
   resetPasswordExpires: { type: Date }
 },
-{
-  timestamps: true
-});
+{timestamps: true});
 
 // Pre-save of user to database, hash password if password is modified or new
 UserSchema.pre('save', function (next) {
@@ -50,13 +54,21 @@ UserSchema.pre('save', function (next) {
   });
 });
 
-// Method to compare password for login authorization
+//=========================
+// User methods
+//=========================
+
+// Compare password for login authorization
 UserSchema.methods.comparePassword = function (inputPassword, cb) {
   bcrypt.compare(inputPassword, this.password, (err, isMatch) => {
     if (err) { return cb(err); }
      cb(null, isMatch);
   });
 }
+
+// Set cash for user
+
+
 
 module.exports = mongoose.model('User', UserSchema);  
 
