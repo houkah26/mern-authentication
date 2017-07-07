@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken'),  
       crypto = require('crypto'),
       User = require('../models/users'),
-      config = require('../config/main');
+      config = require('../config/main'),
+      helperFunctions = require('./helperFunctions');
 
 // generated JWT for user object
 const generateToken = (user) => {
@@ -10,22 +11,11 @@ const generateToken = (user) => {
   });
 }
 
-// Set user info from request
-function setUserInfo(user) {  
-  return {
-    _id: user._id,
-    firstName: user.profile.firstName,
-    lastName: user.profile.lastName,
-    email: user.email,
-    role: user.role,
-  }
-}
-
 //========================================
 // Login Route
 //========================================
 exports.login = (res, user) => {
-  let userInfo = setUserInfo(user);
+  let userInfo = helperFunctions.setUserInfo(user);
 
   res.status(200).json({
     token: 'JWT ' + generateToken(userInfo),
@@ -77,7 +67,7 @@ exports.register = (req, res, next) => {
         if (err) { return next(err); }
 
         // Respond with JWT if user was created
-        let userInfo = setUserInfo(user);
+        let userInfo = helperFunctions.setUserInfo(user);
 
         res.status(201).json({
           token: 'JWT ' + generateToken(userInfo),

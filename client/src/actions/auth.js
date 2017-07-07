@@ -59,9 +59,18 @@ export function protectedTest() {
           payload: response.data.content
         });
       })
-      .catch((error) => {
+      .catch(error => {
         errorHandler(dispatch, error.response, AUTH_ERROR)
       });
+  }
+}
+
+export function clearAuthErrors() {
+  return function (dispatch) {
+    dispatch({
+      type: AUTH_ERROR,
+      payload: ''
+    })
   }
 }
 
@@ -77,18 +86,9 @@ export function fetchUser(token) {
           user: response.data.user
         });
       })
-      .catch((error) => {
+      .catch(error => {
         logoutUser();
       });
-  }
-}
-
-export function clearAuthErrors() {
-  return function (dispatch) {
-    dispatch({
-      type: AUTH_ERROR,
-      payload: ''
-    })
   }
 }
 

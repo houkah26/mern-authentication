@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';  
 import { protectedTest } from '../../actions/auth';
+import AddFundForm from '../form/AddFundForm';
+import FormWrapper from '../form/FormWrapper';
 
 class Dashboard extends Component {
   componentDidMount() {
@@ -16,10 +18,12 @@ class Dashboard extends Component {
   }
   
   render() {
+    const FormWithWrapper = () => FormWrapper(AddFundForm);
     return (
       <div>
         <h2>Dashboard</h2>
         {this.renderContent()}
+        <FormWithWrapper />
       </div>
     )
   }

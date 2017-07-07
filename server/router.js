@@ -62,4 +62,6 @@ module.exports = (app) => {
   // User info route given valid JWT
   userRoutes.get('/info', requireAuth, UserController.getInfo);
   
+  // Add funds route for user
+  userRoutes.put('/add-funds', requireAuth, UserController.addFunds)
 }

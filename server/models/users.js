@@ -66,9 +66,5 @@ UserSchema.methods.comparePassword = function (inputPassword, cb) {
   });
 }
 
-// Set cash for user
-
-
-
 module.exports = mongoose.model('User', UserSchema);  
 
