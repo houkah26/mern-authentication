@@ -9,7 +9,7 @@ import {
   UNAUTH_USER,
   PROTECTED_TEST
 } from './types';
-import { API_URL } from '../constants';
+import { API_URL } from 'constants';
 
 //= =====================
 // Auth Action Creators

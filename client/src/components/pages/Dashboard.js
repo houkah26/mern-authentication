@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';  
-import { protectedTest } from '../../actions/auth';
-import AddFundForm from '../form/AddFundForm';
-import FormWrapper from '../form/FormWrapper';
+import { protectedTest } from 'actions/auth';
+import AddFundForm from 'components/form/AddFundForm';
+import FormWrapper from 'components/form/FormWrapper';
 
 class Dashboard extends Component {
   componentDidMount() {

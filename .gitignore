@@ -57,7 +57,7 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
+# .env  -Disabled to use absolute path in client
 
 # debug for vscode
 .vscode

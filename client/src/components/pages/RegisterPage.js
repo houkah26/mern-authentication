@@ -1,5 +1,5 @@
-import FormWrapper from '../form/FormWrapper';
-import RegisterForm from '../form/RegisterForm';
+import FormWrapper from 'components/form/FormWrapper';
+import RegisterForm from 'components/form/RegisterForm';
 
 const Register = () => FormWrapper(RegisterForm);
 

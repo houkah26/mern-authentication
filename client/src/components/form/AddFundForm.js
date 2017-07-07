@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { Form, Icon } from 'semantic-ui-react'; 
 
-import { addFunds } from '../../actions/user';
+import { addFunds } from 'actions/user';
 
 import RenderField from './RenderField';
 

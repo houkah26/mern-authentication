@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom'
 import cookie from 'react-cookie'; 
 
-import { fetchUser } from '../actions/auth'
+import { fetchUser } from 'actions/auth'
 
-import Layout from '../components/layout';
+import Layout from 'components/layout';
 
 class MainContainer extends Component {
   componentDidMount() {
