@@ -77,6 +77,9 @@ module.exports = (app) => {
   // Set stock routes as subgroup/middleware to userRoutes
   userRoutes.use('/stock', stockRoutes);
 
+  // Route for quoting stock
+  stockRoutes.post('/quote', requireAuth, fetchStockPrice, StockController.quoteStock);
+
   // Route for buying stock for user
   stockRoutes.post('/buy', requireAuth, fetchStockPrice, StockController.buyStock);
 

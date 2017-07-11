@@ -1,22 +1,42 @@
 const axios = require('axios'),
       User = require('../models/users'),
-      setUserInfo = require('./helperFunctions').setUserInfo,
-      stockAPIkey = require('../config/main').stockAPIkey;
+      setUserInfo = require('./helperFunctions').setUserInfo;
 
 //========================================
 // Get stock price for stock routes
 //========================================
 exports.fetchStockPrice = (req, res, next) => {
-  const symbol = req.body.stockName;
+  const symbol = req.body.stockSymbol.toUpperCase();
 
-  axios.get(stockAPIurl(symbol, stockAPIkey))
+  axios.get(`http://download.finance.yahoo.com/d/quotes.csv?f=snl1&s=${symbol}`)
     .then(response => {
-      res.locals.stockPrice = lastPrice(response.data);
+      const data = response.data.split(',');
+
+      res.locals.symbol = data[0].slice(1, -1);
+      res.locals.name = data[1].slice(1, -1);
+      res.locals.price = parseFloat(data[2]);
+
+      // Return error message if price is not a number
+      if (isNaN(res.locals.price)) {
+        return res.status(409).send({ message: 'Invalid stock symbol' });
+      }
+
       next();
     })
     .catch(error => {
       next(error);
     })
+}
+
+//========================================
+// Quote Stock Route for User
+//========================================
+exports.quoteStock = (req, res, next) => {
+  res.status(200).json({
+    symbol: res.locals.symbol,
+    name: res.locals.name,
+    price: res.locals.price
+  })
 }
 
 //========================================
@@ -26,7 +46,7 @@ exports.buyStock = (req, res, next) => {
   // Convert transaction values to desired format/types
   const transaction = parseTransaction(req.body);
 
-  // Set price on transaction passed from previous middleware
+  // Set price & symbol on transaction passed from previous middleware
   transaction.price = res.locals.stockPrice;
 
   const { shares, price, action } = transaction;
@@ -106,7 +126,7 @@ const { shares, price, action } = transaction;
       } else {
 
         // Check if user has enough shares
-        if (!hasEnoughShares(user.portfolio, stockName, shares)) {
+        if (!hasEnoughShares(user.portfolio, stockSymbol, shares)) {
           return res.status(409).send({ message: 'Invalid transaction' });
         }
         
@@ -136,28 +156,29 @@ const { shares, price, action } = transaction;
   });
 }
 
+
 //========================================
 // Helper Functions
 //========================================
 
 // check if stock exists in portfolio
-const containsStock = (portfolio, stockName) => {
-  return portfolio.some(stock => stock.stockName === stockName);
+const containsStock = (portfolio, stockSymbol) => {
+  return portfolio.some(stock => stock.stockSymbol === stockSymbol);
 }
 
 // update stock portfolio
 const updatePortfolio = (portfolio, transaction) => {
-  const { stockName, displayName, action, shares } = transaction;
+  const { stockSymbol, stockName, action, shares } = transaction;
 
   // Check if user already own's stock
-  if (containsStock(portfolio, stockName)) {
+  if (containsStock(portfolio, stockSymbol)) {
     // updated number of shares for given stock
-    updateStock(portfolio, stockName, shares, action);
+    updateStock(portfolio, stockSymbol, shares, action);
   } else if (action === 'BUY') {
     // If user doesn't own, add stock to user's prortfolio
     const stockToAdd = {
+      stockSymbol: stockSymbol,
       stockName: stockName,
-      displayName: displayName,
       totalShares: shares
     };
     portfolio.push(stockToAdd);
@@ -165,9 +186,9 @@ const updatePortfolio = (portfolio, transaction) => {
 }
 
 // update portfolio when user owns stock already
-const updateStock = (portfolio, stockName, shares, action) => {
+const updateStock = (portfolio, stockSymbol, shares, action) => {
   portfolio.map(stock => {
-    if (stock.stockName = stockName) {
+    if (stock.stockSymbol = stockSymbol) {
       // updated number of shares for matched stock
       if (action === 'BUY') {
         stock.totalShares += shares;
@@ -184,30 +205,16 @@ const updateStock = (portfolio, stockName, shares, action) => {
 // Convert transaction values to desired format
 const parseTransaction = (transaction) => {
   transaction.shares = parseInt(transaction.shares);
-  transaction.stockName = transaction.stockName.toUpperCase();
+  transaction.stockSymbol = transaction.stockSymbol.toUpperCase();
   transaction.action = transaction.action.toUpperCase();
 
   return transaction;
 }
 
 // Check if user has enough shares
-const hasEnoughShares = (portfolio, stockName, shares) => {
+const hasEnoughShares = (portfolio, stockSymbol, shares) => {
   return portfolio.some(stock => {
     // return true if stock matches and there are enough shares for transaction
-    return stock.stockName === stockName && stock.totalShares >= shares;
+    return stock.stockSymbol === stockSymbol && stock.totalShares >= shares;
   });
-}
-
-// Stock API url
-const stockAPIurl = (symbol, apiKey) => {
-  return `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${symbol}&interval=1min&apikey=${apiKey}`;
-}
-
-// Extract last closing price from stock data
-const lastPrice = (data) => {
-  const lastRefreshed = data["Meta Data"]["3. Last Refreshed"];
-
-  const closingPrice = data["Time Series (1min)"][lastRefreshed]["4. close"];
-
-  return parseFloat(closingPrice);
 }

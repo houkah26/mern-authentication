@@ -6,13 +6,13 @@ const mongoose = require('mongoose'),
 //================================
 const PortfolioSchema = new Schema({
   // Stock ticker name
-  stockName: {
+  stockSymbol: {
     type: String,
     uppercase: true,
     unique: true,
     required: true
   },
-  displayName: {
+  stockName: {
     type: String,
     required: true
   },

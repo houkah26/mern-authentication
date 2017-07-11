@@ -6,12 +6,12 @@ const mongoose = require('mongoose'),
 //================================
 const HistorySchema = new Schema({
   // Stock ticker name
-  stockName: {
+  stockSymbol: {
     type: String,
     uppercase: true,
     required: true
   },
-  displayName: {
+  stockName: {
     type: String,
     required: true
   },
