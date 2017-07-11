@@ -1,8 +1,9 @@
-const AuthenticationController = require('./controllers/authentication'),
-      UserController = require('./controllers/user'),
-      express = require('express'),
+const express = require('express'),
       passportService = require('./config/passport'),
-      passport = require('passport');
+      passport = require('passport'),
+      AuthenticationController = require('./controllers/authentication'),
+      UserController = require('./controllers/user'),
+      StockController = require('./controllers/stock');
 
 // Middleware to require auth
 const requireAuth = passport.authenticate('jwt', { session: false });
@@ -22,7 +23,8 @@ module.exports = (app) => {
   // Initializing route groups
   const apiRoutes = express.Router(),
         authRoutes = express.Router(),
-        userRoutes = express.Router();
+        userRoutes = express.Router(),
+        stockRoutes = express.Router();
 
   //=========================
   // API Routes (/api)
@@ -63,5 +65,21 @@ module.exports = (app) => {
   userRoutes.get('/info', requireAuth, UserController.getInfo);
   
   // Add funds route for user
-  userRoutes.put('/add-funds', requireAuth, UserController.addFunds)
+  userRoutes.put('/add-funds', requireAuth, UserController.addFunds);
+
+  //=========================
+  // Stock Routes (/api/user/stock)
+  //=========================
+  
+  // Async middleware for getting stock price (stored at res.locals.stockPrice)
+  const fetchStockPrice = StockController.fetchStockPrice;
+
+  // Set stock routes as subgroup/middleware to userRoutes
+  userRoutes.use('/stock', stockRoutes);
+
+  // Route for buying stock for user
+  stockRoutes.post('/buy', requireAuth, fetchStockPrice, StockController.buyStock);
+
+  // Route for selling stock for user
+  stockRoutes.post('/sell', requireAuth, fetchStockPrice, StockController.sellStock);
 }

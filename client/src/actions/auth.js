@@ -9,13 +9,14 @@ import {
   UNAUTH_USER,
   PROTECTED_TEST
 } from './types';
-import { API_URL } from 'constants';
+import { API_URL } from 'constants.js';
 
 //= =====================
 // Auth Action Creators
 //= =====================
 export function loginUser({ email, password }) {
   return function (dispatch) {
+    console.log(`${API_URL}/auth/login`);
     axios.post(`${API_URL}/auth/login`, { email, password })
       .then(response => {
         loginHandler(dispatch, response.data.token, response.data.user);

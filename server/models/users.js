@@ -1,6 +1,8 @@
 const mongoose = require('mongoose'),  
       Schema = mongoose.Schema,
-      bcrypt = require('bcrypt-nodejs');
+      bcrypt = require('bcrypt-nodejs'),
+      HistorySchema = require('./history'),
+      PortfolioSchema = require('./portfolio');
 
 //================================
 // User Schema
@@ -17,8 +19,14 @@ const UserSchema = new Schema({
     required: true
   },
   profile: {
-    firstName: { type: String },
-    lastName: { type: String }
+    firstName: { 
+      type: String,
+      required: true 
+    },
+    lastName: { 
+      type: String,
+      required: true 
+    }
   },
   role: {
     type: String,
@@ -31,8 +39,10 @@ const UserSchema = new Schema({
     min: 0,
     required: true,
   },
-  resetPasswordToken: { type: String },
-  resetPasswordExpires: { type: Date }
+  // Array of stocks
+  portfolio: [PortfolioSchema],
+  // Array of stock transactions
+  transactionHistory: [HistorySchema],
 },
 {timestamps: true});
 

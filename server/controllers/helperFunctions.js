@@ -7,6 +7,8 @@ exports.setUserInfo = (user) => {
     email: user.email,
     role: user.role,
     joined: user.createdAt,
-    cash: user.cash
+    cash: user.cash,
+    portfolio: user.portfolio,
+    transactionHistory: user.transactionHistory
   }
 }
