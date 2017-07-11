@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken'),
 // generated JWT for user object
 const generateToken = (user) => {
   return jwt.sign(user, config.secret, {
-    expiresIn: 10080 // in seconds
+    expiresIn: 24*60*60 // 1 day in seconds
   });
 }
 
