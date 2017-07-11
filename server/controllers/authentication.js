@@ -6,7 +6,14 @@ const jwt = require('jsonwebtoken'),
 
 // generated JWT for user object
 const generateToken = (user) => {
-  return jwt.sign(user, config.secret, {
+  /* remove portfolio, cash, and transactionHistory 
+  from user info for token generation */
+  const tokenUserInfo = Object.assign({}, user);
+  delete tokenUserInfo.cash;
+  delete tokenUserInfo.portfolio;
+  delete tokenUserInfo.transactionHistory;
+  
+  return jwt.sign(tokenUserInfo, config.secret, {
     expiresIn: 24*60*60 // 1 day in seconds
   });
 }
