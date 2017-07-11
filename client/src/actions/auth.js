@@ -16,9 +16,10 @@ import { API_URL } from 'constants.js';
 //= =====================
 export function loginUser({ email, password }) {
   return function (dispatch) {
-    console.log(`${API_URL}/auth/login`);
     axios.post(`${API_URL}/auth/login`, { email, password })
       .then(response => {
+        console.log('login:')
+        console.log(response.data.token);
         loginHandler(dispatch, response.data.token, response.data.user);
       })
       .catch((error) => {
@@ -54,7 +55,6 @@ export function protectedTest() {
       headers: { 'Authorization': cookie.load('token') }
     })
       .then(response => {
-        // console.log(response);
         dispatch({
           type: PROTECTED_TEST,
           payload: response.data.content

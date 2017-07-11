@@ -15,7 +15,6 @@ export function addFunds(fundAmount) {
 
     axios.put(`${API_URL}/user/add-funds`, fundAmount, headers)
       .then(response => {
-        console.log(response.data.user.cash);
         dispatch({
           type: UPDATE_USER,
           user: response.data.user
