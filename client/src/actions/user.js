@@ -4,7 +4,7 @@ import cookie from 'react-cookie';
 import {
   UPDATE_USER
 } from './types';
-import { API_URL } from 'constants';
+import { API_URL } from 'constants.js';
 
 //= =====================
 // User Action Creators
