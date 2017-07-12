@@ -2,11 +2,8 @@ import React from 'react';
 import { Form } from 'semantic-ui-react';
 import { startCase } from 'lodash';
 
-const RenderField = field => {
-  const { touched, error } = field.meta;
-  const input = field.input;
+const RenderField = ({ input, type, meta: { touched, error } }) => {
   const name = input.name;
-  const type = name === "password" ? "password" : "text";
   const displayError = touched && error && true;
 
   return (

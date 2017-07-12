@@ -5,11 +5,16 @@ import { Form, Message, Icon } from 'semantic-ui-react';
 
 import { registerUser, clearAuthErrors } from '../../actions/auth';
 
-import RenderField from './RenderField';
+import renderFields from './renderFields';
 import Checkbox from './Checkbox';
 
 // Input fields to render
-const inputFields = ["firstName", "lastName", "username", "password"];
+const inputFields = [
+  {name: 'firstName', type: 'text'},
+  {name: 'lastName', type: 'text'},
+  {name: 'username', type: 'text'},
+  {name: 'password', type: 'password'},
+]
 
 // Form validationg for redux-form
 const validate = formProps => {
@@ -55,13 +60,9 @@ class RegisterForm extends Component {
       <Form error={containsError} onSubmit={handleSubmit(this.handleFormSubmit)}>
         <Message error header='Error:' content={errorMessage}/>
         <Form.Group widths="equal">
-          {inputFields.slice(0, 2).map(name => (
-            <Field name={name} component={RenderField} key={name}/>
-          ))}
+          {renderFields(inputFields.slice(0, 2))}
         </Form.Group>
-        {inputFields.slice(2).map(name => (
-          <Field name={name} component={RenderField} key={name}/>
-        ))}
+        {renderFields(inputFields.slice(2))}
         <Field name="checkbox" component={Checkbox} label="I agree to the Terms and Conditions" />
         <Form.Button>
           <Icon name='signup' />Register

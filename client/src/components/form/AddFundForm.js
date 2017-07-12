@@ -1,20 +1,24 @@
 import React, { Component } from 'react';  
 import { connect } from 'react-redux';  
-import { Field, reduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import { Form, Icon } from 'semantic-ui-react'; 
 
 import { addFunds } from '../../actions/user';
 
-import RenderField from './RenderField';
+import renderFields from './renderFields';
 
 // Input fields to render
-const inputFields = ["fundAmount"];
+const inputFields = [{name: 'fundAmount', type: 'number'}];
 
 // Form validationg for redux-form
 const validate = formProps => {
   const errors = {};
 
+  console.log(typeof formProps.fundAmount)
+
   const fundAmount = parseFloat(formProps.fundAmount);
+
+  console.log(fundAmount);
 
   if (isNaN(fundAmount)) {
     errors.fundAmount = 'Please enter a valid fund amount.';
@@ -37,7 +41,7 @@ class AddFunds extends Component {
 
     return (
       <Form onSubmit={handleSubmit(this.handleFormSubmit)}>
-        {inputFields.map(name => <Field name={name} component={RenderField} key={name}/>)}
+        {renderFields(inputFields)}
         <Form.Button>
           <Icon name='dollar' />Add Funds
         </Form.Button>

@@ -1,14 +1,17 @@
 import React, { Component } from 'react';  
 import { connect } from 'react-redux';  
-import { Field, reduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import { Form, Message, Icon } from 'semantic-ui-react'; 
 
 import { loginUser, clearAuthErrors } from '../../actions/auth';
 
-import RenderField from './RenderField';
+import renderFields from './renderFields';
 
 // Input fields to render
-const inputFields = ["username", "password"];
+const inputFields = [
+  {name: 'username', type: 'text'},
+  {name: 'password', type: 'password'}
+];
 
 // Form validationg for redux-form
 const validate = formProps => {
@@ -41,7 +44,7 @@ class Login extends Component {
     return (
       <Form error={containsError} onSubmit={handleSubmit(this.handleFormSubmit)}>
         <Message error header='Error:' content={errorMessage}/>
-        {inputFields.map(name => <Field name={name} component={RenderField} key={name}/>)}
+        {renderFields(inputFields)}
         <Form.Button>
           <Icon name='sign in' />Login
         </Form.Button>
