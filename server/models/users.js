@@ -8,7 +8,7 @@ const mongoose = require('mongoose'),
 // User Schema
 //================================
 const UserSchema = new Schema({  
-  email: {
+  username: {
     type: String,
     lowercase: true,
     unique: true,

@@ -35,14 +35,14 @@ exports.login = (res, user) => {
 //========================================
 exports.register = (req, res, next) => {  
   // Check for registration errors
-  const email = req.body.email;
+  const username = req.body.username;
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
   const password = req.body.password;
 
-  // Return error if no email provided
-  if (!email) {
-    return res.status(422).send({ message: 'You must enter an email address.'});
+  // Return error if no username provided
+  if (!username) {
+    return res.status(422).send({ message: 'You must enter an username address.'});
   }
 
   // Return error if full name not provided
@@ -55,17 +55,17 @@ exports.register = (req, res, next) => {
     return res.status(422).send({ message: 'You must enter a password.' });
   }
 
-  User.findOne({ email: email }, (err, existingUser) => {
+  User.findOne({ username: username }, (err, existingUser) => {
       if (err) { return next(err); }
 
       // If user is not unique, return error
       if (existingUser) {
-        return res.status(409).send({ message: 'That email address is already in use.' });
+        return res.status(409).send({ message: 'That username address is already in use.' });
       }
 
-      // If email is unique and password was provided, create account
+      // If username is unique and password was provided, create account
       let user = new User({
-        email: email,
+        username: username,
         password: password,
         profile: { firstName: firstName, lastName: lastName }
       });

@@ -8,14 +8,14 @@ import { loginUser, clearAuthErrors } from 'actions/auth';
 import RenderField from './RenderField';
 
 // Input fields to render
-const inputFields = ["email", "password"];
+const inputFields = ["username", "password"];
 
 // Form validationg for redux-form
 const validate = formProps => {
   const errors = {};
 
-  if (!formProps.email) {
-    errors.email = 'Please enter an email';
+  if (!formProps.username) {
+    errors.username = 'Please enter an username';
   }
 
   if (!formProps.password) {

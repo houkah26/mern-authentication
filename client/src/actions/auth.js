@@ -14,9 +14,9 @@ import { API_URL } from 'constants.js';
 //= =====================
 // Auth Action Creators
 //= =====================
-export function loginUser({ email, password }) {
+export function loginUser({ username, password }) {
   return function (dispatch) {
-    axios.post(`${API_URL}/auth/login`, { email, password })
+    axios.post(`${API_URL}/auth/login`, { username, password })
       .then(response => {
         console.log('login:')
         console.log(response.data.token);
@@ -28,9 +28,9 @@ export function loginUser({ email, password }) {
   }
 }
 
-export function registerUser({ email, firstName, lastName, password }) {
+export function registerUser({ username, firstName, lastName, password }) {
   return function (dispatch) {
-    axios.post(`${API_URL}/auth/register`, { email, firstName, lastName, password })
+    axios.post(`${API_URL}/auth/register`, { username, firstName, lastName, password })
       .then(response => {
         loginHandler(dispatch, response.data.token, response.data.user);
       })

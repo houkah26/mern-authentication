@@ -9,7 +9,7 @@ import RenderField from './RenderField';
 import Checkbox from './Checkbox';
 
 // Input fields to render
-const inputFields = ["firstName", "lastName", "email", "password"];
+const inputFields = ["firstName", "lastName", "username", "password"];
 
 // Form validationg for redux-form
 const validate = formProps => {
@@ -23,8 +23,8 @@ const validate = formProps => {
     errors.lastName = 'Please enter a last name';
   }
 
-  if (!formProps.email) {
-    errors.email = 'Please enter an email';
+  if (!formProps.username) {
+    errors.username = 'Please enter an username';
   }
 
   if (!formProps.password) {

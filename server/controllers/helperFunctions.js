@@ -4,7 +4,7 @@ exports.setUserInfoForResponse = (user) => {
     _id: user._id,
     firstName: user.profile.firstName,
     lastName: user.profile.lastName,
-    email: user.email,
+    username: user.username,
     role: user.role,
     joined: user.createdAt,
     cash: user.cash,
