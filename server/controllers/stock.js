@@ -1,19 +1,19 @@
 const axios = require('axios'),
       User = require('../models/users'),
-      setUserInfo = require('./helperFunctions').setUserInfo;
+      setUserInfoForResponse = require('./helperFunctions').setUserInfoForResponse;
 
 //========================================
-// Get stock price for stock routes
+// Get stock price middleware for stock routes
 //========================================
 exports.fetchStockPrice = (req, res, next) => {
-  const symbol = req.body.stockSymbol.toUpperCase();
+  const stockSymbol = req.body.stockSymbol.toUpperCase();
 
-  axios.get(`http://download.finance.yahoo.com/d/quotes.csv?f=snl1&s=${symbol}`)
+  axios.get(`http://download.finance.yahoo.com/d/quotes.csv?f=snl1&s=${stockSymbol}`)
     .then(response => {
       const data = response.data.split(',');
 
-      res.locals.symbol = data[0].slice(1, -1);
-      res.locals.name = data[1].slice(1, -1);
+      res.locals.stockSymbol = data[0].slice(1, -1);
+      res.locals.stockName = data[1].slice(1, -1);
       res.locals.price = parseFloat(data[2]);
 
       // Return error message if price is not a number
@@ -33,8 +33,8 @@ exports.fetchStockPrice = (req, res, next) => {
 //========================================
 exports.quoteStock = (req, res, next) => {
   res.status(200).json({
-    symbol: res.locals.symbol,
-    name: res.locals.name,
+    stockSymbol: res.locals.stockSymbol,
+    stockName: res.locals.stockName,
     price: res.locals.price
   })
 }
@@ -43,11 +43,8 @@ exports.quoteStock = (req, res, next) => {
 // Buy Stock Route for User
 //========================================
 exports.buyStock = (req, res, next) => {
-  // Convert transaction values to desired format/types
-  const transaction = parseTransaction(req.body);
-
-  // Set price & symbol on transaction passed from previous middleware
-  transaction.price = res.locals.stockPrice;
+  // Set transaction values to desired format/types from body and locals
+  const transaction = formatTransaction(req.body, res.locals);
 
   const { shares, price, action } = transaction;
 
@@ -89,7 +86,7 @@ exports.buyStock = (req, res, next) => {
           const userInfo = setUserInfoForResponse(user);
           
           // respond with updated user
-          res.status(200).json({
+          res.status(201).json({
             user: userInfo
           });
         })
@@ -101,13 +98,10 @@ exports.buyStock = (req, res, next) => {
 // Sell Stock Route for User
 //========================================
 exports.sellStock = (req, res, next) => {
-// Convert transaction values to desired format/types
-const transaction = parseTransaction(req.body);
+  // Set transaction values to desired format/types from body and locals
+  const transaction = formatTransaction(req.body, res.locals);
 
-// Set price on transaction passed from previous middleware
-transaction.price = res.locals.stockPrice;
-
-const { shares, price, action } = transaction;
+  const { shares, price, action, stockSymbol } = transaction;
 
   // Check for appropriate action type
   if (action !== 'SELL') {
@@ -148,7 +142,7 @@ const { shares, price, action } = transaction;
           const userInfo = setUserInfoForResponse(user);
           
           // respond with updated user
-          res.status(200).json({
+          res.status(201).json({
             user: userInfo
           });
         })
@@ -202,11 +196,15 @@ const updateStock = (portfolio, stockSymbol, shares, action) => {
   });
 }
 
-// Convert transaction values to desired format
-const parseTransaction = (transaction) => {
-  transaction.shares = parseInt(transaction.shares);
-  transaction.stockSymbol = transaction.stockSymbol.toUpperCase();
-  transaction.action = transaction.action.toUpperCase();
+// Set transaction values to desired format
+const formatTransaction = (reqBody, resLocals) => {
+  const transaction = {
+    shares: parseInt(reqBody.shares),
+    action: reqBody.action.toUpperCase(),
+    stockSymbol: resLocals.stockSymbol,
+    stockName: resLocals.stockName,
+    price: resLocals.price
+  };
 
   return transaction;
 }
