@@ -9,7 +9,6 @@ const PortfolioSchema = new Schema({
   stockSymbol: {
     type: String,
     uppercase: true,
-    unique: true,
     required: true
   },
   stockName: {
