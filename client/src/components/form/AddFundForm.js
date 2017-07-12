@@ -14,11 +14,7 @@ const inputFields = [{name: 'fundAmount', type: 'number'}];
 const validate = formProps => {
   const errors = {};
 
-  console.log(typeof formProps.fundAmount)
-
   const fundAmount = parseFloat(formProps.fundAmount);
-
-  console.log(fundAmount);
 
   if (isNaN(fundAmount)) {
     errors.fundAmount = 'Please enter a valid fund amount.';
