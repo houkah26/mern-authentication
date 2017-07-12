@@ -18,8 +18,6 @@ export function loginUser({ username, password }) {
   return function (dispatch) {
     axios.post(`${API_URL}/auth/login`, { username, password })
       .then(response => {
-        console.log('login:')
-        console.log(response.data.token);
         loginHandler(dispatch, response.data.token, response.data.user);
       })
       .catch((error) => {
