@@ -1,5 +1,5 @@
-import FormWrapper from 'components/form/FormWrapper';
-import LoginForm from 'components/form/LoginForm';
+import FormWrapper from '../form/FormWrapper';
+import LoginForm from '../form/LoginForm';
 
 const LoginPage = () => FormWrapper(LoginForm);
 

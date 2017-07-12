@@ -1,6 +1,6 @@
 import React from 'react';
 
-import NavMenu from 'components/nav/main/NavMenu'
+import NavMenu from '../nav/main/NavMenu'
 
 const Header = () => (
   <div className="header">
