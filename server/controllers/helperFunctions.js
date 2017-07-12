@@ -1,5 +1,5 @@
 // Set user info to be sent back to client
-exports.setUserInfo = (user) => {  
+exports.setUserInfoForResponse = (user) => {  
   return {
     _id: user._id,
     firstName: user.profile.firstName,

@@ -5,7 +5,7 @@ const User = require('../models/users'),
 // User Info Route
 //========================================
 exports.getInfo = (req, res) => {
-  userInfo = helperFunctions.setUserInfo(req.user);
+  userInfo = helperFunctions.setUserInfoForResponse(req.user);
 
   res.status(200).json({
     user: userInfo
@@ -33,7 +33,7 @@ exports.addFunds = (req, res, next) => {
         user.save((err, user) => {
           if (err) { return next(err); }
 
-          const userInfo = helperFunctions.setUserInfo(user);
+          const userInfo = helperFunctions.setUserInfoForResponse(user);
           
           // respond with updated user
           res.status(200).json({

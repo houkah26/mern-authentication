@@ -86,7 +86,7 @@ exports.buyStock = (req, res, next) => {
         user.save((err, user) => {
           if (err) { return next(err); }
 
-          const userInfo = setUserInfo(user);
+          const userInfo = setUserInfoForResponse(user);
           
           // respond with updated user
           res.status(200).json({
@@ -145,7 +145,7 @@ const { shares, price, action } = transaction;
         user.save((err, user) => {
           if (err) { return next(err); }
 
-          const userInfo = setUserInfo(user);
+          const userInfo = setUserInfoForResponse(user);
           
           // respond with updated user
           res.status(200).json({
