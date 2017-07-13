@@ -2,19 +2,15 @@ import React from 'react';
 import { Menu, Icon } from 'semantic-ui-react';
 import { startCase } from 'lodash';
 
-const MenuItem = ({ name, activeItem, onClick, icon, position, shouldRender, header }) => {
+const MenuItem = ({ name, active, onClick, icon, position = null, shouldRender = true, header = false }) => {
   const renderIcon = () => {
     if (icon) {
       return <Icon name={icon.name} size={icon.size} />
     }
   }
 
-  const isActive = activeItem === name;
+  console.log(name + " is active: " + active);
 
-  // Return null if item should not render
-  if (!shouldRender) {
-    return null;
-  }
 
   if (header) {
     const underline = { textDecoration: 'underline' }; 
@@ -35,7 +31,7 @@ const MenuItem = ({ name, activeItem, onClick, icon, position, shouldRender, hea
   return (
     <Menu.Item 
       name={name}
-      active={isActive}
+      active={active}
       onClick={onClick}
       position={position}
     >
