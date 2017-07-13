@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';  
-import { protectedTest } from 'actions/auth';
+import { protectedTest } from '../../actions/auth';
 import AddFundForm from '../form/AddFundForm';
 import FormWrapper from '../form/FormWrapper';
 

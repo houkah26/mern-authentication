@@ -2,7 +2,7 @@ import { AUTH_USER,
          UNAUTH_USER,
          AUTH_ERROR,
          PROTECTED_TEST,
-         UPDATE_USER } from 'actions/types';
+         UPDATE_USER } from '../actions/types';
 
 const INITIAL_STATE = { error: '', content: '', authenticated: false, user: {}}
 
