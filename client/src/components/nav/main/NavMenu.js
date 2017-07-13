@@ -19,7 +19,7 @@ class NavMenu extends Component {
     const username = this.props.username;
     const activeItem = this.props.currentPath.slice(1);
     const menuItems = [
-      {name: 'homepage', icon: {name: 'home', size: 'large'}, shouldRender: true, position: null, onClick: this.navToRoute},
+      {name: '', icon: {name: 'home', size: 'large'}, shouldRender: true, position: null, onClick: this.navToRoute},
       {name: 'dashboard', icon: {name: 'browser', size: 'large'}, shouldRender: this.props.authenticated, position: null, onClick: this.navToRoute},
       {name: username, header: true, shouldRender: this.props.authenticated, position: 'right'},
       {name: 'logout', icon: {name: 'sign out', size: 'large'}, shouldRender: this.props.authenticated, position: null, onClick: this.props.logoutUser},

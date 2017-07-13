@@ -9,8 +9,7 @@ const MenuItem = ({ name, activeItem, onClick, icon, position, shouldRender, hea
     }
   }
 
-  const routeName = name === 'homepage' ? '' : name;
-  const active = activeItem === routeName;
+  const isActive = activeItem === name;
 
   // Return null if item should not render
   if (!shouldRender) {
@@ -36,7 +35,7 @@ const MenuItem = ({ name, activeItem, onClick, icon, position, shouldRender, hea
   return (
     <Menu.Item 
       name={name}
-      active={active}
+      active={isActive}
       onClick={onClick}
       position={position}
     >
