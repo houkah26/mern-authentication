@@ -9,9 +9,6 @@ const MenuItem = ({ name, active, onClick, icon, position = null, shouldRender =
     }
   }
 
-  console.log(name + " is active: " + active);
-
-
   if (header) {
     const underline = { textDecoration: 'underline' }; 
     /* use hidden '_' to render whitespace before username

@@ -5,7 +5,7 @@ import { Menu } from 'semantic-ui-react';
 import { logoutUser } from '../../../actions/auth';
 import { changeRoute } from '../../../actions/utility';
 
-import MenuItem from './MenuItem'
+import MenuItem from '../MenuItem'
 
 import './NavMenu.css';
 
