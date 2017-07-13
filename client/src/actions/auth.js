@@ -86,7 +86,10 @@ export function fetchUser(token) {
         });
       })
       .catch(error => {
-        logoutUser();
+        cookie.remove('token', { path: '/' });
+        dispatch(push('/login'));
+
+        errorHandler(dispatch, error.response, AUTH_ERROR);
       });
   }
 }
@@ -130,7 +133,6 @@ const errorHandler = (dispatch, error, type) => {
       type: type,
       payload: 'You are not authorized to do this. Please login and try again.'
     });
-    logoutUser();
   } else {
     dispatch({
       type: type,
