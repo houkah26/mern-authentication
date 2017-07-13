@@ -1,18 +1,21 @@
 import React, { Component } from 'react';  
+import cookie from 'react-cookie';  
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
 export default function(ComposedComponent) {  
   class Authentication extends Component {
     componentWillMount() {
-      if(!this.props.authenticated) {
-       this.props.dispatch(push("/login"));
+      // reroute to login page if no token
+      const token = cookie.load('token');
+      if (!token) {
+        this.props.dispatch(push("/login"));
       }
     }
 
     componentWillUpdate(nextProps) {
       if(!nextProps.authenticated) {
-       this.props.dispatch(push("/login"));
+        this.props.dispatch(push("/login"));
       }
     }
 
