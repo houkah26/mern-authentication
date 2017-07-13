@@ -5,7 +5,7 @@ import { Menu } from 'semantic-ui-react';
 import { logoutUser } from '../../../actions/auth';
 import { changeRoute } from '../../../actions/utility';
 
-import MenuItem from '../MenuItem'
+import MenuItem from '../MenuItem';
 
 import './NavMenu.css';
 
@@ -25,7 +25,7 @@ class NavMenu extends Component {
     ];
     const isAuthItems = [
       {name: 'dashboard', icon: {name: 'browser', size: 'large'}, onClick: this.navToRoute},
-      {name: username, header: true, position: 'right'},
+      {name: 'username', header: true, position: 'right', headerContent: `Logged in as ${username}`},
       {name: 'logout', icon: {name: 'sign out', size: 'large'}, onClick: this.props.logoutUser}
     ];
     const notAuthItems = [
@@ -42,7 +42,7 @@ class NavMenu extends Component {
         <MenuItem 
           { ...item }
           active={activeItem === item.name}
-          key={item.name + 'key'}
+          key={item.name}
         />
       ))
     )
