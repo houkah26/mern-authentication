@@ -86,8 +86,11 @@ export function fetchUser(token) {
         });
       })
       .catch(error => {
+<<<<<<< HEAD
         // token was likely bad
         // remove token, return to login page, and dispatch error
+=======
+>>>>>>> 64c732d591b12b4eab0f7addaa9e1ff2015010fe
         cookie.remove('token', { path: '/' });
         dispatch(push('/login'));
 
