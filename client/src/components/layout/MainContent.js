@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container } from 'semantic-ui-react';
 
-import Routes from '../../Routes';
+import Routes from '../pages/Routes';
 
 const MainContent = () => (
   <Container className='main-contet'>
