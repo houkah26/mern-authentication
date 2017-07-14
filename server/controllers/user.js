@@ -116,6 +116,7 @@ const mapPrices = (portfolio, priceArray) => {
     priceArray.forEach(stockPrice => {
       if (stock.stockSymbol === stockPrice[0]) {
         stockWithPrice.price = parseFloat(stockPrice[1]);
+        stockWithPrice.total = stockWithPrice.price * stockWithPrice.totalShares;
       }
     })
     return stockWithPrice;
