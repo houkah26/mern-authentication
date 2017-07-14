@@ -8,7 +8,5 @@ exports.setUserInfoForResponse = (user) => {
     role: user.role,
     joined: user.createdAt,
     cash: user.cash,
-    portfolio: user.portfolio,
-    transactionHistory: user.transactionHistory
   }
 }

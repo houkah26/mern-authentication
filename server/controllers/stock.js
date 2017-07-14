@@ -6,6 +6,8 @@ const axios = require('axios'),
 // Get stock price middleware for stock routes
 //========================================
 exports.fetchStockPrice = (req, res, next) => {
+  console.log(req.user);
+
   const stockSymbol = req.body.stockSymbol.toUpperCase();
 
   axios.get(`http://download.finance.yahoo.com/d/quotes.csv?f=snl1&s=${stockSymbol}`)

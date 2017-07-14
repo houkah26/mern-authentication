@@ -67,6 +67,12 @@ module.exports = (app) => {
   // Add funds route for user
   userRoutes.put('/add-funds', requireAuth, UserController.addFunds);
 
+  // Route for getting user's transaction history
+  userRoutes.get('/history', requireAuth, UserController.getHistory);
+
+  // Route for getting user's portfolio with current stock prices
+  userRoutes.get('/portfolio', requireAuth, UserController.getPortfolio);
+
   //=========================
   // Stock Routes (/api/user/stock)
   //=========================
