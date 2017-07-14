@@ -9,16 +9,27 @@ import MenuItem from '../MenuItem';
 
 import './NavMenu.css';
 
+const extractRootPath = (currentPath) => {
+  // check for presence of route (second slash: ie /dashboard/something)
+  const secondSlashIndex = currentPath.indexOf('/', 1);
+
+  if (secondSlashIndex > -1) {
+    return currentPath.slice(1, secondSlashIndex);
+  } else {
+    return currentPath.slice(1);
+  }
+}
+
 class NavMenu extends Component {
   navToRoute = (e, { name }) => {
-    const route = name;
+    const route = `/${name}`;
     this.props.changeRoute(route);
   }
 
   renderMenuItems = () => {
     const username = this.props.username;
     const isAuthenticated = this.props.authenticated;
-    const activeItem = this.props.currentPath.slice(1);
+    const activeItem = extractRootPath(this.props.currentPath);
 
     const homepageItem = [
       {name: '', icon: {name: 'home', size: 'large'}, onClick: this.navToRoute}

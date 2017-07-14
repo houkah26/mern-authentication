@@ -11,7 +11,7 @@ class NavMenu extends Component {
   navToRoute = (e, { name }) => {
     // convert name to dash case (ie. add-funds)
     const route = kebabCase(name);
-    this.props.changeRoute(route);
+    this.props.changeRoute(`/dashboard/${route}`);
   }
 
   renderMenuItems = () => {
