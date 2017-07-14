@@ -41,7 +41,7 @@ class NavMenu extends Component {
 
   render() {
     return (
-      <Menu tabular>
+      <Menu tabular attached='top'>
         {this.renderMenuItems()}
       </Menu>
     )
