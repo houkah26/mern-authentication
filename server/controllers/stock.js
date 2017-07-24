@@ -186,7 +186,7 @@ const updatePortfolio = (portfolio, transaction) => {
 // update portfolio when user owns stock already
 const updateStock = (portfolio, stockSymbol, shares, action) => {
   portfolio.map(stock => {
-    if (stock.stockSymbol = stockSymbol) {
+    if (stock.stockSymbol === stockSymbol) {
       // updated number of shares for matched stock
       if (action === 'BUY') {
         stock.totalShares += shares;
