@@ -1,6 +1,8 @@
 const axios = require('axios'),
       User = require('../models/users'),
-      setUserInfoForResponse = require('./helperFunctions').setUserInfoForResponse;
+      helperFunctions = require('./helperFunctions');
+      setUserInfoForResponse = helperFunctions.setUserInfoForResponse;
+      CSVToArray = helperFunctions.CSVToArray;
 
 //========================================
 // Get stock price middleware for stock routes
@@ -11,11 +13,12 @@ exports.fetchStockPrice = (req, res, next) => {
 
   axios.get(`http://download.finance.yahoo.com/d/quotes.csv?f=snl1&s=${stockSymbol}`)
     .then(response => {
-      const data = response.data.split(',');
+      const dataArray = CSVToArray(response.data);
+      const stock = dataArray[0]; //first item in array is requested stock
 
-      res.locals.stockSymbol = data[0].slice(1, -1);
-      res.locals.stockName = data[1].slice(1, -1);
-      res.locals.price = parseFloat(data[2]);
+      res.locals.stockSymbol = stock[0];
+      res.locals.stockName = stock[1];
+      res.locals.price = parseFloat(stock[2]);
 
       // Return error message if price is not a number
       if (isNaN(res.locals.price)) {
