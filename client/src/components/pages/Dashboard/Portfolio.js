@@ -32,6 +32,7 @@ export default class Portfolio extends Component {
       headers: { 'Authorization': token }
     })
       .then(response => {
+        console.log(response.data.portfolio)
         this.setState({ portfolio: response.data.portfolio })
       })
       .catch(error => {
