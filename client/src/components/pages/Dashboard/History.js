@@ -42,11 +42,10 @@ export default class History extends Component {
       });
   }
 
+  // Add created at and total value to history
   mapHistory = (history) => {
     return history.map(transaction => {
-      console.log(transaction.createdAt)
       transaction.createdAt = moment(transaction.createdAt).format('M/D/YY, LT');
-      console.log(transaction.createdAt)
       transaction.totalValue = transaction.price * transaction.shares;
       return transaction;
     })
