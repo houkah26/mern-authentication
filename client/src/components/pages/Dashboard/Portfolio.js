@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import cookie from 'react-cookie';
 import { Segment } from 'semantic-ui-react';
+import { round } from 'lodash';
 
 import { API_URL }from '../../../constants';
 
@@ -32,7 +33,9 @@ export default class Portfolio extends Component {
       headers: { 'Authorization': token }
     })
       .then(response => {
-        this.setState({ portfolio: response.data.portfolio })
+        // round prices to two decimals
+        const portfolio = roundPrices(response.data.portfolio);
+        this.setState({ portfolio: portfolio })
       })
       .catch(error => {
         console.log(error);
@@ -51,4 +54,13 @@ export default class Portfolio extends Component {
       </Segment>
     )
   }
+}
+
+// Round prices to two decimals
+const roundPrices = (stockData) => {
+  return stockData.map(stock => {
+    stock.price = round(stock.price, 2).toFixed(2);
+    stock.total = round(stock.total, 2).toFixed(2);
+    return stock;
+  })
 }
