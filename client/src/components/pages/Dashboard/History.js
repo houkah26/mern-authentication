@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import cookie from 'react-cookie';
-import { Segment } from 'semantic-ui-react';
 import moment from 'moment';
 import { round } from 'lodash';
 
@@ -49,12 +48,12 @@ export default class History extends Component {
     const { history } = this.state;
 
     return (
-      <Segment attached='bottom'>
+      <div>
         {history.length === 0 ?
           <Loading /> :
           <Table tableData={history} tableHeaders={tableHeaders}/>
         }
-      </Segment>
+      </div>
     )
   }
 }

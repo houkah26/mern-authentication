@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import cookie from 'react-cookie';
-import { Segment } from 'semantic-ui-react';
 import { round } from 'lodash';
 
 import { API_URL }from '../../../constants';
@@ -46,12 +45,12 @@ export default class Portfolio extends Component {
     const { portfolio } = this.state;
 
     return (
-      <Segment attached='bottom'>
+      <div>
         {portfolio.length === 0 ?
           <Loading /> :
           <Table tableData={portfolio} tableHeaders={tableHeaders}/>
         }
-      </Segment>
+      </div>
     )
   }
 }
