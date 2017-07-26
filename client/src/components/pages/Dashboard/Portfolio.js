@@ -18,7 +18,8 @@ const tableHeaders = [
 
 export default class Portfolio extends Component {
   state = {
-    portfolio: []
+    portfolio: [],
+    totalValue: 0
   }
 
   componentDidMount() {
@@ -32,9 +33,16 @@ export default class Portfolio extends Component {
       headers: { 'Authorization': token }
     })
       .then(response => {
+        // calculate total value
+        const totalValue = calcTotalValue(response.data.portfolio);
+
         // round prices to two decimals
         const portfolio = roundPrices(response.data.portfolio);
-        this.setState({ portfolio: portfolio })
+
+        this.setState({ 
+          portfolio: portfolio,
+          totalValue: totalValue
+         })
       })
       .catch(error => {
         console.log(error);
@@ -42,13 +50,18 @@ export default class Portfolio extends Component {
   }
 
   render() {
-    const { portfolio } = this.state;
+    const { portfolio, totalValue } = this.state;
+    const tableFooter = [null, null, null, "Total", totalValue];
 
     return (
       <div>
         {portfolio.length === 0 ?
           <Loading /> :
-          <Table tableData={portfolio} tableHeaders={tableHeaders}/>
+          <Table
+            tableData={portfolio}
+            tableHeaders={tableHeaders}
+            tableFooter={tableFooter}
+          />
         }
       </div>
     )
@@ -62,4 +75,13 @@ const roundPrices = (stockData) => {
     stock.total = round(stock.total, 2).toFixed(2);
     return stock;
   })
+}
+
+// Calculate Total Value of Entire Portfolio
+const calcTotalValue = (portfolio) => {
+  let total = 0;
+  portfolio.forEach(stock => {
+    total += stock.total;
+  });
+  return round(total, 2).toFixed(2);
 }

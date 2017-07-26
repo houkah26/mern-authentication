@@ -28,6 +28,22 @@ export default class TableSortable extends Component {
     })
   }
 
+  renderFooter = () => {
+    const { tableFooter } = this.props;
+
+    if (tableFooter) {
+      return (
+        <Table.Header>
+          <Table.Row>
+            {tableFooter.map((tableCell, index) => (
+              <Table.HeaderCell key={index}>{tableCell}</Table.HeaderCell>
+            ))}
+          </Table.Row>
+        </Table.Header>
+      )
+    }
+  }
+
   render() {
     const { column, data, direction } = this.state;
     const { tableHeaders } = this.props;
@@ -52,6 +68,7 @@ export default class TableSortable extends Component {
             </Table.Row>
           ))}
         </Table.Body>
+        {this.renderFooter()}
       </Table>
     )
   }
