@@ -22,7 +22,7 @@ exports.fetchStockPrice = (req, res, next) => {
 
       // Return error message if price is not a number
       if (isNaN(res.locals.price)) {
-        return res.status(409).send({ message: 'Invalid stock symbol' });
+        return res.status(409).json({ message: 'Invalid stock symbol' });
       }
 
       next();
