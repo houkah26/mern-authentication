@@ -1,7 +1,17 @@
-import React from 'react';
+import React from "react";
+import { Grid } from "semantic-ui-react";
 
-const BuyStock = () => (
-  <h2>BuyStock!</h2>
-)
+import QuoteStockForm from "../../form/QuoteStockForm";
+import BuyStockForm from "../../form/BuyStockForm";
+
+const BuyStock = () =>
+  <Grid stackable columns={2}>
+    <Grid.Column>
+      <QuoteStockForm />
+    </Grid.Column>
+    <Grid.Column>
+      <BuyStockForm />
+    </Grid.Column>
+  </Grid>;
 
 export default BuyStock;
