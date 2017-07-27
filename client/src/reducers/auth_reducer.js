@@ -24,7 +24,7 @@ export default function(state = INITIAL_STATE, action) {
     case PROTECTED_TEST:
       return { ...state, content: action.payload };
     case UPDATE_USER:
-      return { ...state, user: action.user };
+      return { ...state, user: action.user, error: "" };
     default:
       return state;
   }
