@@ -5,7 +5,7 @@ import QuoteStockForm from "../../form/QuoteStockForm";
 import BuyStockForm from "../../form/BuyStockForm";
 
 const BuyStock = () =>
-  <Grid stackable columns={2}>
+  <Grid stackable columns={2} divided>
     <Grid.Column>
       <QuoteStockForm />
     </Grid.Column>
