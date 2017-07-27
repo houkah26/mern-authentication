@@ -1,18 +1,25 @@
-import { AUTH_USER,  
-         UNAUTH_USER,
-         AUTH_ERROR,
-         PROTECTED_TEST,
-         UPDATE_USER } from '../actions/types';
+import {
+  AUTH_USER,
+  UNAUTH_USER,
+  ERROR,
+  PROTECTED_TEST,
+  UPDATE_USER
+} from "../actions/types";
 
-const INITIAL_STATE = { error: '', content: '', authenticated: false, user: {}}
+const INITIAL_STATE = {
+  error: "",
+  content: "",
+  authenticated: false,
+  user: {}
+};
 
-export default function (state = INITIAL_STATE, action) {  
-  switch(action.type) {
+export default function(state = INITIAL_STATE, action) {
+  switch (action.type) {
     case AUTH_USER:
-      return { ...state, user: action.user, error: '', authenticated: true };
+      return { ...state, user: action.user, error: "", authenticated: true };
     case UNAUTH_USER:
       return { ...INITIAL_STATE };
-    case AUTH_ERROR:
+    case ERROR:
       return { ...state, error: action.payload };
     case PROTECTED_TEST:
       return { ...state, content: action.payload };
