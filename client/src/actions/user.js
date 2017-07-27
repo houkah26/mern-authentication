@@ -58,3 +58,32 @@ export function buyStock(stockSymbol, shares) {
       });
   };
 }
+
+export function sellStock(stockSymbol, shares) {
+  return function(dispatch) {
+    const reqBody = {
+      stockSymbol,
+      shares,
+      action: "SELL"
+    };
+    const headers = { headers: { Authorization: cookie.load("token") } };
+
+    axios
+      .post(`${API_URL}/user/stock/sell`, reqBody, headers)
+      .then(response => {
+        // Update user
+        dispatch({
+          type: UPDATE_USER,
+          user: response.data.user
+        });
+
+        // Reroute to portfolio
+        dispatch(push("/dashboard/portfolio"));
+      })
+      .catch(error => {
+        console.log(error.response);
+
+        errorHandler(dispatch, error.response, ERROR);
+      });
+  };
+}
