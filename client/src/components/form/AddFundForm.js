@@ -20,7 +20,7 @@ const validate = formProps => {
     errors.fundAmount = "Please enter a valid fund amount.";
   }
 
-  if (formProps.fundAmount <= 0) {
+  if (fundAmount <= 0) {
     errors.fundAmount = "Please enter an amount greater than zero.";
   }
 
