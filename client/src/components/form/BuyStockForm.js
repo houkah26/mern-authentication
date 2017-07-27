@@ -24,7 +24,7 @@ const inititalState = {
   quotePrice: 0,
   numShares: 0,
   totalCost: 0,
-  errorMessage: "",
+  quoteErrorMessage: "",
   isLoading: false,
   isSuccesfull: false
 };
@@ -72,7 +72,7 @@ class BuyStockForm extends Component {
       .catch(error => {
         this.setState({
           ...inititalState,
-          errorMessage: error.response.data.message
+          quoteErrorMessage: error.response.data.message
         });
       });
   };
@@ -86,18 +86,21 @@ class BuyStockForm extends Component {
       quoteSymbol,
       numShares,
       totalCost,
-      errorMessage,
+      quoteErrorMessage,
       isLoading,
       isSuccesfull
     } = this.state;
-    const { handleSubmit } = this.props;
-    const containsError = errorMessage.length > 0;
+
+    const { handleSubmit, buyErrorMessage } = this.props;
+
+    const quoteContainsError = quoteErrorMessage.length > 0;
+    const buyContainsError = buyErrorMessage.length > 0;
 
     return (
       <div>
         <Header size="medium">Buy Stock:</Header>
         <Form
-          error={containsError}
+          error={quoteContainsError}
           success={isSuccesfull}
           onSubmit={handleSubmit(this.handleFormSubmit)}
         >
@@ -107,7 +110,7 @@ class BuyStockForm extends Component {
           <Form.Button loading={isLoading}>
             Calculate Transaction Cost
           </Form.Button>
-          <Message error content={errorMessage} />
+          <Message error content={quoteErrorMessage} />
           <Message success>
             {`${numShares} shares of ${quoteSymbol} costs $${totalCost}.`}
           </Message>
@@ -117,13 +120,16 @@ class BuyStockForm extends Component {
           <Button color="green" onClick={this.handlePurchaseClick}>
             Purchase Shares
           </Button>}
+        <Message error hidden={!buyContainsError}>
+          {buyErrorMessage}
+        </Message>
       </div>
     );
   }
 }
 
 const mapStateToProps = state => {
-  return { cash: state.auth.user.cash };
+  return { cash: state.auth.user.cash, buyErrorMessage: state.auth.error };
 };
 
 const createForm = reduxForm({
