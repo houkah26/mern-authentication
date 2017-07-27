@@ -3,13 +3,7 @@ import axios from 'axios';
 import { push } from 'react-router-redux';
 import { has as _has } from 'lodash';
 
-import {
-  AUTH_USER,
-  AUTH_ERROR,
-  UNAUTH_USER,
-  PROTECTED_TEST
-} from './types';
-import { API_URL } from '../constants';
+import errorHandler from "./errorHandler";
 
 //= =====================
 // Auth Action Creators
@@ -113,32 +107,4 @@ const loginHandler = (dispatch, token, user) => {
   });
 
   // reroute to dashboard
-  dispatch(push('/dashboard'));
-}
-
-// Error handler for authentication errors
-const errorHandler = (dispatch, error, type) => {
-  console.log(error);
-
-  // check for error message otherwise set as network error
-  let errorMessage;
-  const containsMessage = _has(error, 'data.message');
-  if (containsMessage) {
-    errorMessage = error.data.message;
-  } else {
-    errorMessage = 'Network Error: Please wait and try again.';
-  }
-
-  // if there is no message and status code is 401, send unauthorized error message
-  if (_has(error, 'status') && error.status === 401 && !containsMessage) {
-    dispatch({
-      type: type,
-      payload: 'You are not authorized to do this. Please login and try again.'
-    });
-  } else {
-    dispatch({
-      type: type,
-      payload: errorMessage
-    });
-  }
-}
+};
