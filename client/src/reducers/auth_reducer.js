@@ -3,7 +3,8 @@ import {
   UNAUTH_USER,
   ERROR,
   PROTECTED_TEST,
-  UPDATE_USER
+  UPDATE_USER,
+  CLEAR_ERROR
 } from "../actions/types";
 
 const INITIAL_STATE = {
@@ -25,6 +26,8 @@ export default function(state = INITIAL_STATE, action) {
       return { ...state, content: action.payload };
     case UPDATE_USER:
       return { ...state, user: action.user, error: "" };
+    case CLEAR_ERROR:
+      return { ...state, error: "" };
     default:
       return state;
   }
