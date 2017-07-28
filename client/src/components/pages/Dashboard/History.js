@@ -52,7 +52,7 @@ export default class History extends Component {
       <div>
         {history.length === 0
           ? <Loading />
-          : <Table tableData={history} tableHeaders={tableHeaders} />}
+          : <Table tableData={history.reverse()} tableHeaders={tableHeaders} />}
       </div>
     );
   }
