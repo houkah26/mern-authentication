@@ -173,7 +173,9 @@ const updatePortfolio = (portfolio, transaction) => {
   // Check if user already own's stock
   if (containsStock(portfolio, stockSymbol)) {
     // updated number of shares for given stock
+    console.log(portfolio.toObject());
     updateStock(portfolio, stockSymbol, shares, action);
+    console.log(portfolio.toObject());
   } else if (action === "BUY") {
     // If user doesn't own, add stock to user's prortfolio
     const stockToAdd = {
@@ -189,17 +191,20 @@ const updatePortfolio = (portfolio, transaction) => {
 const updateStock = (portfolio, stockSymbol, shares, action) => {
   portfolio.map(stock => {
     if (stock.stockSymbol === stockSymbol) {
-      // updated number of shares for matched stock
+      // Calculate total shares after transaction
+      let totalShares;
       if (action === "BUY") {
-        stock.totalShares += shares;
+        totalShares = stock.totalShares + shares;
       } else if (action === "SELL") {
-        stock.totalShares -= shares;
+        totalShares = stock.totalShares - shares;
       }
 
-      // Remove stock if there are zero shares left
-      if (stock.totalShares === 0) {
+      // Remove stock from portfolio if there are zero shares left
+      if (totalShares === 0) {
         stock.remove();
       } else {
+        // Otherwise update number of shares of stock in portfolio
+        stock.totalShares = totalShares;
         return stock;
       }
     } else {
