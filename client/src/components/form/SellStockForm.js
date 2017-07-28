@@ -4,6 +4,8 @@ import { reduxForm } from "redux-form";
 import { Dropdown, Header, List, Grid } from "semantic-ui-react";
 import { Form, Message } from "semantic-ui-react";
 
+import { isPositiveInt } from "./helperFunctions";
+
 import { sellStock } from "../../actions/user";
 
 import renderFields from "./renderFields";
@@ -17,12 +19,8 @@ const validate = (formProps, props) => {
 
   const numberOfShares = parseFloat(formProps.numberOfShares);
 
-  if (isNaN(numberOfShares)) {
+  if (!isPositiveInt(numberOfShares)) {
     errors.numberOfShares = "Please enter a valid number of shares.";
-  }
-
-  if (formProps.numberOfShares <= 0) {
-    errors.numberOfShares = "Please enter an amount greater than zero.";
   }
 
   return errors;

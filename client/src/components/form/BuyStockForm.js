@@ -6,6 +6,8 @@ import axios from "axios";
 import cookie from "react-cookie";
 import { round } from "lodash";
 
+import { isPositiveInt } from "./helperFunctions";
+
 import { buyStock } from "../../actions/user";
 
 import { API_URL } from "../../constants";
@@ -38,11 +40,7 @@ const validate = (formProps, props) => {
   }
 
   const numberOfShares = parseFloat(formProps.numberOfShares);
-  if (
-    !numberOfShares ||
-    numberOfShares <= 0 ||
-    !Number.isInteger(numberOfShares)
-  ) {
+  if (!isPositiveInt(numberOfShares)) {
     errors.numberOfShares = "Please enter a valid number";
   }
 

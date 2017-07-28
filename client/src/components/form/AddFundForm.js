@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import { Form, Icon, Message } from "semantic-ui-react";
 
+import { countDecimals } from "./helperFunctions";
+
 import { addFunds } from "../../actions/user";
 
 import renderFields from "./renderFields";
@@ -15,13 +17,8 @@ const validate = formProps => {
   const errors = {};
 
   const fundAmount = parseFloat(formProps.fundAmount);
-
-  if (isNaN(fundAmount)) {
+  if (isNaN(fundAmount) || fundAmount <= 0 || countDecimals(fundAmount) > 2) {
     errors.fundAmount = "Please enter a valid fund amount.";
-  }
-
-  if (fundAmount <= 0) {
-    errors.fundAmount = "Please enter an amount greater than zero.";
   }
 
   return errors;
