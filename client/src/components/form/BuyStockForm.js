@@ -37,7 +37,12 @@ const validate = (formProps, props) => {
     errors.stockSymbol = "Please enter a symbol";
   }
 
-  if (!formProps.numberOfShares || formProps.numberOfShares <= 0) {
+  const numberOfShares = parseFloat(formProps.numberOfShares);
+  if (
+    !numberOfShares ||
+    numberOfShares <= 0 ||
+    !Number.isInteger(numberOfShares)
+  ) {
     errors.numberOfShares = "Please enter a valid number";
   }
 
