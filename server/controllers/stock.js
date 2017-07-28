@@ -195,7 +195,13 @@ const updateStock = (portfolio, stockSymbol, shares, action) => {
       } else if (action === "SELL") {
         stock.totalShares -= shares;
       }
-      return stock;
+
+      // Remove stock if there are zero shares left
+      if (stock.totalShares === 0) {
+        stock.remove();
+      } else {
+        return stock;
+      }
     } else {
       return stock;
     }
