@@ -53,7 +53,7 @@ class AddFunds extends Component {
         onSubmit={handleSubmit(this.handleFormSubmit)}
       >
         {renderFields(inputFields)}
-        <Form.Button>
+        <Form.Button color="green">
           <Icon name="dollar" />Add Funds
         </Form.Button>
         <Message error content={addFundErrorMessage} />
