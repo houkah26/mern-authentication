@@ -1,16 +1,16 @@
 .layout {
   min-height: 100%;
 
-  .header {
+  > .header {
     padding-bottom: 1em;
   }
 
-  .footer {
+  > .footer {
     position: fixed;
     bottom: 0;
   }
 
-  .main-content {
+  > .main-content {
     width: 95%;
     max-width: 1000px;
     margin: 0 auto;
