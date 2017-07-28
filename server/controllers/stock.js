@@ -173,9 +173,7 @@ const updatePortfolio = (portfolio, transaction) => {
   // Check if user already own's stock
   if (containsStock(portfolio, stockSymbol)) {
     // updated number of shares for given stock
-    console.log(portfolio.toObject());
     updateStock(portfolio, stockSymbol, shares, action);
-    console.log(portfolio.toObject());
   } else if (action === "BUY") {
     // If user doesn't own, add stock to user's prortfolio
     const stockToAdd = {
