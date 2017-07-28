@@ -38,7 +38,7 @@ class UserInfo extends Component {
   };
 
   renderUserInfo = () => {
-    const { firstName, lastName, username, joined, cash } = this.props.user;
+    const { firstName, lastName, username, joined } = this.props.user;
 
     // format joined date (ex: "July 2nd, 1953")
     const joinedDate = moment(joined).format("MMMM Do, YYYY");
@@ -61,12 +61,42 @@ class UserInfo extends Component {
           <List.Header>Joined</List.Header>
           {joinedDate}
         </List.Item>
-        <List.Item>
-          <List.Header>Cash Balance</List.Header>
-          {`$${cash.toFixed(2)}`}
-        </List.Item>
       </List>
     );
+  };
+
+  renderTradingPerformance = () => {
+    const { cash, cashAdded } = this.props.user;
+    const { totalValue } = this.state;
+    const startingFunds = 1000;
+    const netGain = cash + totalValue - (startingFunds + cashAdded);
+
+    if (totalValue) {
+      return (
+        <List divided>
+          <List.Item>
+            <List.Header>Cash Balance</List.Header>
+            {`$${cash.toFixed(2)}`}
+          </List.Item>
+          <List.Item>
+            <List.Header>Funds Added</List.Header>
+            {`$${cashAdded.toFixed(2)}`}
+          </List.Item>
+          <List.Item>
+            <List.Header>Starting Funds</List.Header>
+            {`$${startingFunds.toFixed(2)}`}
+          </List.Item>
+          <List.Item>
+            <List.Header>Current Portfolio Value</List.Header>
+            {`$${totalValue.toFixed(2)}`}
+          </List.Item>
+          <List.Item>
+            <List.Header>Net Gain</List.Header>
+            {`$${netGain.toFixed(2)}`}
+          </List.Item>
+        </List>
+      );
+    }
   };
 
   render() {
@@ -74,11 +104,16 @@ class UserInfo extends Component {
       <Grid stackable columns={2} divided>
         <Grid.Column>
           <Header dividing size="medium">
-            User Information and History
+            User Information
           </Header>
           {this.renderUserInfo()}
         </Grid.Column>
-        <Grid.Column />
+        <Grid.Column>
+          <Header dividing size="medium">
+            Trading Performance
+          </Header>
+          {this.renderTradingPerformance()}
+        </Grid.Column>
       </Grid>
     );
   }
