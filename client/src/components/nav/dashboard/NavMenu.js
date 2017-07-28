@@ -18,7 +18,7 @@ class NavMenu extends Component {
     // extract active item from path after /dashboard/ and convert to camelcase
     const activeItem = camelCase(this.props.currentPath.slice(11));
 
-    const cash = round(this.props.cash, 2);
+    const cash = round(this.props.cash, 2).toFixed(2);
 
     const itemsToRender = [
       { name: "portfolio", onClick: this.navToRoute },
