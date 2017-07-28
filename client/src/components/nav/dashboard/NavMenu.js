@@ -28,20 +28,16 @@ class NavMenu extends Component {
       { name: "buyStock", onClick: this.navToRoute },
       { name: "sellStock", onClick: this.navToRoute },
       { name: "addFunds", onClick: this.navToRoute },
+      { name: "userInfo", onClick: this.navToRoute, position: "right" },
       {
         name: "funds",
         header: true,
-        position: "right",
         headerContent: `Cash Balance: $${cash}`
       }
     ];
 
     return itemsToRender.map(item =>
-      <MenuItem
-        {...item}
-        active={activeItem === item.name}
-        key={item.name + "key"}
-      />
+      <MenuItem {...item} active={activeItem === item.name} key={item.name} />
     );
   };
 

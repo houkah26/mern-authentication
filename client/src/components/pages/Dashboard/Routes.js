@@ -7,6 +7,7 @@ import BuyStock from "./BuyStock";
 import History from "./History";
 import AddFunds from "./AddFunds";
 import SellStock from "./SellStock";
+import UserInfo from "./UserInfo";
 
 const Routes = () =>
   <Switch>
@@ -20,6 +21,7 @@ const Routes = () =>
     <Route path={"/dashboard/history"} component={History} />
     <Route path={"/dashboard/add-funds"} component={AddFunds} />
     <Route path={"/dashboard/sell-stock"} component={SellStock} />
+    <Route path={"/dashboard/user-info"} component={UserInfo} />
     <Route component={NotFoundPage} />
   </Switch>;
 
