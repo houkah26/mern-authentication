@@ -7,10 +7,11 @@ import { API_URL } from "../../../constants";
 
 import Loading from "../../loading";
 import SellStockForm from "../../../components/form/SellStockForm";
+import NoStockInPortfolio from "./NoStockInPortfolio";
 
 export default class SellStock extends Component {
   state = {
-    portfolio: []
+    portfolio: null
   };
 
   componentDidMount() {
@@ -37,14 +38,22 @@ export default class SellStock extends Component {
       });
   };
 
-  render() {
+  renderSellStockForm = () => {
     const { portfolio } = this.state;
 
+    if (portfolio === null) {
+      return <Loading />;
+    } else if (portfolio.length === 0) {
+      return <NoStockInPortfolio />;
+    } else {
+      return <SellStockForm portfolio={portfolio} />;
+    }
+  };
+
+  render() {
     return (
       <div>
-        {portfolio.length === 0
-          ? <Loading />
-          : <SellStockForm portfolio={portfolio} />}
+        {this.renderSellStockForm()}
       </div>
     );
   }

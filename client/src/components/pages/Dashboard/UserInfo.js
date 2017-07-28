@@ -71,7 +71,7 @@ class UserInfo extends Component {
     const startingFunds = 1000;
     const netGain = cash + totalValue - (startingFunds + cashAdded);
 
-    if (totalValue) {
+    if (totalValue !== null) {
       return (
         <List divided>
           <List.Item>

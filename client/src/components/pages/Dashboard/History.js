@@ -8,6 +8,7 @@ import { API_URL } from "../../../constants";
 
 import Loading from "../../loading";
 import Table from "../../table";
+import NoStockInPortfolio from "./NoStockInPortfolio";
 
 const tableHeaders = [
   { name: "Date/Time", key: "createdAt", sortKey: "unixTimeStamp" },
@@ -21,7 +22,7 @@ const tableHeaders = [
 
 export default class History extends Component {
   state = {
-    history: []
+    history: null
   };
 
   componentDidMount() {
@@ -45,14 +46,24 @@ export default class History extends Component {
       });
   };
 
-  render() {
+  renderHistory = () => {
     const { history } = this.state;
 
+    if (history === null) {
+      return <Loading />;
+    } else if (history.length === 0) {
+      return <NoStockInPortfolio />;
+    } else {
+      return (
+        <Table tableData={history.reverse()} tableHeaders={tableHeaders} />
+      );
+    }
+  };
+
+  render() {
     return (
       <div>
-        {history.length === 0
-          ? <Loading />
-          : <Table tableData={history.reverse()} tableHeaders={tableHeaders} />}
+        {this.renderHistory()}
       </div>
     );
   }

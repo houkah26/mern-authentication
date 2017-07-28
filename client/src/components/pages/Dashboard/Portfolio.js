@@ -8,6 +8,7 @@ import { API_URL } from "../../../constants";
 
 import Loading from "../../loading";
 import Table from "../../table";
+import NoStockInPortfolio from "./NoStockInPortfolio";
 
 const tableHeaders = [
   { name: "Symbol", key: "stockSymbol" },
@@ -19,7 +20,7 @@ const tableHeaders = [
 
 export default class Portfolio extends Component {
   state = {
-    portfolio: [],
+    portfolio: null,
     totalValue: 0
   };
 
@@ -51,19 +52,29 @@ export default class Portfolio extends Component {
       });
   };
 
-  render() {
+  renderPortfolio = () => {
     const { portfolio, totalValue } = this.state;
     const tableFooter = [null, null, null, "Total", totalValue];
 
+    if (portfolio === null) {
+      return <Loading />;
+    } else if (portfolio.length === 0) {
+      return <NoStockInPortfolio />;
+    } else {
+      return (
+        <Table
+          tableData={portfolio}
+          tableHeaders={tableHeaders}
+          tableFooter={tableFooter}
+        />
+      );
+    }
+  };
+
+  render() {
     return (
       <div>
-        {portfolio.length === 0
-          ? <Loading />
-          : <Table
-              tableData={portfolio}
-              tableHeaders={tableHeaders}
-              tableFooter={tableFooter}
-            />}
+        {this.renderPortfolio()}
       </div>
     );
   }
