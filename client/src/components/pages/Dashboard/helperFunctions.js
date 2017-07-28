@@ -6,7 +6,7 @@ export const calcTotalValue = portfolio => {
   portfolio.forEach(stock => {
     total += stock.total;
   });
-  return round(total, 2).toFixed(2);
+  return round(total, 2);
 };
 
 // Round prices to two decimals

@@ -42,7 +42,7 @@ export default class Portfolio extends Component {
 
         this.setState({
           portfolio: portfolio,
-          totalValue: totalValue
+          totalValue: totalValue.toFixed(2)
         });
       })
       .catch(error => {
