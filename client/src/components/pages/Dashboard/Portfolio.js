@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
 import cookie from "react-cookie";
-import { round } from "lodash";
 
+import { calcTotalValue, roundPrices } from "./helperFunctions";
 import { API_URL } from "../../../constants";
 
 import Loading from "../../loading";
@@ -67,21 +67,3 @@ export default class Portfolio extends Component {
     );
   }
 }
-
-// Round prices to two decimals
-const roundPrices = stockData => {
-  return stockData.map(stock => {
-    stock.price = round(stock.price, 2).toFixed(2);
-    stock.total = round(stock.total, 2).toFixed(2);
-    return stock;
-  });
-};
-
-// Calculate Total Value of Entire Portfolio
-const calcTotalValue = portfolio => {
-  let total = 0;
-  portfolio.forEach(stock => {
-    total += stock.total;
-  });
-  return round(total, 2).toFixed(2);
-};
