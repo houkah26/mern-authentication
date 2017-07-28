@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import { Menu } from "semantic-ui-react";
 import { kebabCase, camelCase, round } from "lodash";
 
+import "./NavMenu.css";
+
 import { changeRoute } from "../../../actions/utility";
 
 import MenuItem from "../MenuItem";
@@ -45,7 +47,7 @@ class NavMenu extends Component {
 
   render() {
     return (
-      <Menu tabular attached="top">
+      <Menu tabular attached="top" className="dashboard-nav">
         {this.renderMenuItems()}
       </Menu>
     );
