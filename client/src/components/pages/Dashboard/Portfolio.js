@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
 import cookie from "react-cookie";
+import { round } from "lodash";
 
-import { calcTotalValue, roundPrices } from "./helperFunctions";
+import { calcTotalValue } from "./helperFunctions";
 import { API_URL } from "../../../constants";
 
 import Loading from "../../loading";
@@ -12,8 +13,8 @@ const tableHeaders = [
   { name: "Symbol", key: "stockSymbol" },
   { name: "Name", key: "stockName" },
   { name: "Shares", key: "totalShares" },
-  { name: "Price Per Share ($)", key: "price" },
-  { name: "Total Value ($)", key: "total" }
+  { name: "Price Per Share ($)", key: "price", sortKey: "priceNum" },
+  { name: "Total Value ($)", key: "total", sortKey: "totalNum" }
 ];
 
 export default class Portfolio extends Component {
@@ -37,8 +38,8 @@ export default class Portfolio extends Component {
         // calculate total value
         const totalValue = calcTotalValue(response.data.portfolio);
 
-        // round prices to two decimals
-        const portfolio = roundPrices(response.data.portfolio);
+        // round prices & set alt sorting values
+        const portfolio = mapPortfolio(response.data.portfolio);
 
         this.setState({
           portfolio: portfolio,
@@ -67,3 +68,15 @@ export default class Portfolio extends Component {
     );
   }
 }
+
+const mapPortfolio = portfolio => {
+  return portfolio.map(stock => {
+    // Copy price and total for sorting with sortKey
+    stock.priceNum = stock.price;
+    stock.totalNum = stock.total;
+
+    stock.price = round(stock.price, 2).toFixed(2);
+    stock.total = round(stock.total, 2).toFixed(2);
+    return stock;
+  });
+};

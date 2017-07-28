@@ -8,12 +8,3 @@ export const calcTotalValue = portfolio => {
   });
   return round(total, 2);
 };
-
-// Round prices to two decimals
-export const roundPrices = stockData => {
-  return stockData.map(stock => {
-    stock.price = round(stock.price, 2).toFixed(2);
-    stock.total = round(stock.total, 2).toFixed(2);
-    return stock;
-  });
-};

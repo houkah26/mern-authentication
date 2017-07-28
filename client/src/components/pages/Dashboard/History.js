@@ -10,13 +10,13 @@ import Loading from "../../loading";
 import Table from "../../table";
 
 const tableHeaders = [
-  { name: "Date/Time", key: "createdAt" },
+  { name: "Date/Time", key: "createdAt", sortKey: "unixTimeStamp" },
   { name: "Transaction", key: "action" },
   { name: "Symbol", key: "stockSymbol" },
   { name: "Name", key: "stockName" },
   { name: "Shares", key: "shares" },
-  { name: "Price ($)", key: "price" },
-  { name: "Total ($)", key: "totalValue" }
+  { name: "Price ($)", key: "price", sortKey: "priceNum" },
+  { name: "Total ($)", key: "totalValue", sortKey: "totalValueNum" }
 ];
 
 export default class History extends Component {
@@ -69,6 +69,10 @@ const mapHistory = history => {
 
     // total cost of transaction
     const totalValue = transaction.price * transaction.shares;
+
+    // store numbers for sorting
+    transaction.totalValueNum = totalValue;
+    transaction.priceNum = transaction.price;
 
     // convert prices to two decimal places
     transaction.totalValue = round(totalValue, 2).toFixed(2);

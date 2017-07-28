@@ -9,13 +9,13 @@ export default class TableSortable extends Component {
     direction: null
   };
 
-  handleSort = clickedColumn => () => {
+  handleSort = (clickedColumn, altSortKey) => () => {
     const { column, data, direction } = this.state;
 
     if (column !== clickedColumn) {
       this.setState({
         column: clickedColumn,
-        data: sortByWithTime(data, [clickedColumn]),
+        data: sortBy(data, [altSortKey || clickedColumn]),
         direction: "ascending"
       });
 
@@ -57,7 +57,7 @@ export default class TableSortable extends Component {
             {tableHeaders.map(header =>
               <Table.HeaderCell
                 sorted={column === header.key ? direction : null}
-                onClick={this.handleSort(header.key)}
+                onClick={this.handleSort(header.key, header.sortKey)}
                 key={header.name}
               >
                 {header.name}
@@ -81,12 +81,3 @@ export default class TableSortable extends Component {
     );
   }
 }
-
-// Sort by unixTimestamp if createdAt is clicked to correctly sort time
-const sortByWithTime = (data, clickedColumn) => {
-  if (clickedColumn === "createdAt") {
-    return sortBy(data, ["unixTimestamp"]);
-  } else {
-    return sortBy(data, [clickedColumn]);
-  }
-};
