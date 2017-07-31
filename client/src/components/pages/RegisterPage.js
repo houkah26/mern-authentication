@@ -1,6 +1,14 @@
-import FormWrapper from '../form/FormWrapper';
-import RegisterForm from '../form/RegisterForm';
+import React from "react";
+import RegisterForm from "../form/RegisterForm";
 
-const Register = () => FormWrapper(RegisterForm);
+const divStyles = {
+  maxWidth: "400px",
+  margin: "0 auto"
+};
 
-export default Register;
+const RegisterPage = () =>
+  <div style={divStyles}>
+    <RegisterForm />
+  </div>;
+
+export default RegisterPage;
